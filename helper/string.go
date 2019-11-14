@@ -3,7 +3,7 @@ package helper
 import (
 	"bytes"
 	"fmt"
-	"github.com/griesbacher/nagflux/logging"
+	"github.com/ConSol/nagflux/logging"
 	"strconv"
 	"strings"
 	"time"

@@ -2,11 +2,11 @@ package livestatus
 
 import (
 	"fmt"
-	"github.com/griesbacher/nagflux/collector"
-	"github.com/griesbacher/nagflux/config"
-	"github.com/griesbacher/nagflux/data"
-	"github.com/griesbacher/nagflux/helper"
-	"github.com/griesbacher/nagflux/logging"
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/config"
+	"github.com/ConSol/nagflux/data"
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
 	"regexp"
 	"strings"

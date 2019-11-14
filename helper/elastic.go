@@ -2,7 +2,7 @@ package helper
 
 import (
 	"fmt"
-	"github.com/griesbacher/nagflux/config"
+	"github.com/ConSol/nagflux/config"
 	"strings"
 )
 

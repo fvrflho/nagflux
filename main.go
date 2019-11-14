@@ -3,18 +3,18 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/griesbacher/nagflux/collector"
-	"github.com/griesbacher/nagflux/collector/livestatus"
-	"github.com/griesbacher/nagflux/collector/modGearman"
-	"github.com/griesbacher/nagflux/collector/nagflux"
-	"github.com/griesbacher/nagflux/collector/spoolfile"
-	"github.com/griesbacher/nagflux/config"
-	"github.com/griesbacher/nagflux/data"
-	"github.com/griesbacher/nagflux/logging"
-	"github.com/griesbacher/nagflux/statistics"
-	"github.com/griesbacher/nagflux/target/elasticsearch"
-	"github.com/griesbacher/nagflux/target/file/json"
-	"github.com/griesbacher/nagflux/target/influx"
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/collector/livestatus"
+	"github.com/ConSol/nagflux/collector/modGearman"
+	"github.com/ConSol/nagflux/collector/nagflux"
+	"github.com/ConSol/nagflux/collector/spoolfile"
+	"github.com/ConSol/nagflux/config"
+	"github.com/ConSol/nagflux/data"
+	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol/nagflux/statistics"
+	"github.com/ConSol/nagflux/target/elasticsearch"
+	"github.com/ConSol/nagflux/target/file/json"
+	"github.com/ConSol/nagflux/target/influx"
 	"github.com/kdar/factorlog"
 	"os"
 	"os/signal"
@@ -46,7 +46,7 @@ Commandline Parameter:
 -configPath Path to the config file. If no file path is given the default is ./config.gcfg.
 -V Print version and exit
 
-For further informations / bugs reportes: https://github.com/Griesbacher/nagflux
+For further informations / bugs reportes: https://github.com/ConSol/nagflux
 `)
 	}
 	flag.StringVar(&configPath, "configPath", "config.gcfg", "path to the config file")

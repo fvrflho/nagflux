@@ -1,11 +1,11 @@
 package spoolfile
 
 import (
-	"github.com/griesbacher/nagflux/collector"
-	"github.com/griesbacher/nagflux/collector/livestatus"
-	"github.com/griesbacher/nagflux/config"
-	"github.com/griesbacher/nagflux/logging"
-	"github.com/griesbacher/nagflux/statistics"
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/collector/livestatus"
+	"github.com/ConSol/nagflux/config"
+	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol/nagflux/statistics"
 	"io/ioutil"
 	"path"
 	"time"

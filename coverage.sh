@@ -14,7 +14,7 @@ function coverage {
 	fi
 }
 
-PackageRoot='github.com/griesbacher/nagflux/'
+PackageRoot='github.com/ConSol/nagflux/'
 
 echo "mode: count" > cover.out
 for dir in $(find `ls` -type d);

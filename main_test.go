@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/griesbacher/nagflux/target/influx"
+	"github.com/ConSol/nagflux/target/influx"
 	"io/ioutil"
 	"net/http"
 	"net/url"

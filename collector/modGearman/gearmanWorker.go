@@ -3,13 +3,13 @@ package modGearman
 import (
 	"time"
 
-	"github.com/griesbacher/nagflux/collector"
-	"github.com/griesbacher/nagflux/collector/livestatus"
-	"github.com/griesbacher/nagflux/collector/spoolfile"
-	"github.com/griesbacher/nagflux/config"
-	"github.com/griesbacher/nagflux/helper"
-	"github.com/griesbacher/nagflux/helper/crypto"
-	"github.com/griesbacher/nagflux/logging"
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/collector/livestatus"
+	"github.com/ConSol/nagflux/collector/spoolfile"
+	"github.com/ConSol/nagflux/config"
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/helper/crypto"
+	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
 	"github.com/mikespook/gearman-go/worker"
 )

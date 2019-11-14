@@ -2,9 +2,9 @@ package livestatus
 
 import (
 	"fmt"
-	"github.com/griesbacher/nagflux/collector"
-	"github.com/griesbacher/nagflux/helper"
-	"github.com/griesbacher/nagflux/logging"
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/logging"
 	"strings"
 )
 

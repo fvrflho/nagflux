@@ -1,6 +1,6 @@
 package collector
 
-import "github.com/griesbacher/nagflux/data"
+import "github.com/ConSol/nagflux/data"
 
 //SimplePrintable can be used to send strings as printable
 type SimplePrintable struct {

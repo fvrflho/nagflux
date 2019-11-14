@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/griesbacher/nagflux/data"
+	"github.com/ConSol/nagflux/data"
 	"sync"
 )
 
