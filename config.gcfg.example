@@ -69,6 +69,22 @@
     Arguments = "precision=ms&u=root&p=root&db=fast"
     StopPullingDataIfDown = false
 
+[InfluxDB "victoriametrics"]
+    Enabled = false
+    Version = 1.0
+    Address = "http://user:password@127.0.0.1:8428"
+    Arguments = "precision=ms"
+    StopPullingDataIfDown = false
+
+[InfluxDB "telegraf"]
+    Enabled = false
+    Version = 1.0
+    Address = "http://user:password@127.0.0.1:8186"
+    Arguments = "precision=ms"
+    StopPullingDataIfDown = false
+
+
+
 [ElasticsearchGlobal]
     HostcheckAlias = "hostcheck"
     NumberOfShards = 1

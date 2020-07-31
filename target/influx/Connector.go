@@ -32,6 +32,9 @@ type Connector struct {
 	httpClient            http.Client
 	target                data.Target
 	stopReadingDataIfDown bool
+	clientTimeout int
+	createDatabaseIfNotExists bool
+	
 }
 
 //ConnectorFactory Constructor which will create some workers if the connection is established.
@@ -42,6 +45,8 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 	if db, found_db := parsedArgs["db"]; found_db {
 		databaseName = db
 	}
+
+
 	timeout := time.Duration(time.Duration(clientTimeout) * time.Second)
 	transport := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	client := http.Client{Timeout: timeout, Transport: transport}
@@ -49,7 +54,19 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 		connectionHost: connectionHost, connectionArgs: connectionArgs, dumpFile: dumpFile,
 		workers: make([]*Worker, workerAmount), maxWorkers: maxWorkers, jobs: jobs, quit: make(chan bool),
 		log: logging.GetLogger(), version: version, isAlive: false, databaseExists: false, databaseName: databaseName,
-		httpClient: client, target: target, stopReadingDataIfDown: stopReadingDataIfDown,
+		httpClient: client, target: target, stopReadingDataIfDown: stopReadingDataIfDown, clientTimeout: clientTimeout, createDatabaseIfNotExists: createDatabaseIfNotExists,
+	}
+
+    if createDatabaseIfNotExists && databaseName=="" {
+		s.log.Info("InfluxDB(" + target.Name + ") Database not found, db creation not possible -> createDatabaseIfNotExists switched to false")
+		s.createDatabaseIfNotExists=false
+		createDatabaseIfNotExists = false
+	}
+
+	// if  createDatabaseIfNotExists is false, set flag databaseExists flag to true!
+	if !createDatabaseIfNotExists {
+		s.log.Info("InfluxDB(" + target.Name + ") createDatabaseIfNotExists false > databaseExists set permanantly to true")
+		s.databaseExists = true
 	}
 
 	loginData := ""
@@ -75,17 +92,19 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 		if s.isAlive {
 			s.log.Debug("Influxdb(" + target.Name + ") is running")
 		}
-		s.TestDatabaseExists()
-		for i := 0; i < 5 && !s.databaseExists; i++ {
-			time.Sleep(time.Duration(2) * time.Second)
-			if createDatabaseIfNotExists {
-				s.CreateDatabase(loginData)
-			}
-			s.TestDatabaseExists()
-		}
-		if !s.databaseExists {
-			s.log.Critical("InfluxDB Database(" + databaseName + ") does not exists and Nagflux was not able to create it")
-		}
+		if createDatabaseIfNotExists {
+		    s.TestDatabaseExists()
+		    for i := 0; i < 5 && !s.databaseExists; i++ {
+			    time.Sleep(time.Duration(2) * time.Second)
+			    if createDatabaseIfNotExists {
+				    s.CreateDatabase(loginData)
+			    }
+			    s.TestDatabaseExists()
+		    }
+		    if !s.databaseExists {
+			    s.log.Critical("InfluxDB Database(" + databaseName + ") does not exists and Nagflux was not able to create it")
+		    }
+	    }
 	}
 
 	for w := 0; w < workerAmount; w++ {
@@ -178,6 +197,11 @@ func (connector *Connector) TestIfIsAlive(stopReadingDataIfDown bool) bool {
 
 //TestDatabaseExists test active if the database exists.
 func (connector *Connector) TestDatabaseExists() bool {
+
+	if !connector.createDatabaseIfNotExists {
+		connector.log.Debug("Skipped TestDatabaseExists:" + connector.databaseName)
+		return true
+	} 
 	resp, err := connector.httpClient.Get(connector.connectionHost + "/query?q=show%20databases&" + connector.connectionArgs)
 	if err != nil {
 		return false
