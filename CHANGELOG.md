@@ -1,3 +1,14 @@
+## v0.4.2 - 31.7.2020
+### Feature
+- added support for non InfluxDB targets implementing the HTTP Line Protocol: 
+  e.g. Victoriametrics and Telegraf, which have no db concept and other ping/health urls.
+- InfluxDB: optional Database check depending on "db" label in Arguments, to enable multiple targets with database check for InfluxDB
+  (for backwards compatibility of config files, would fit better in InfluxDB sections)
+
+### Fix
+- InfluxDB: fixed failing stop, when StopPullingDataIfDown
+
+
 ## v0.4.1 - 07.06.2017
 ### Feature
 - Unicode support in Units like µs

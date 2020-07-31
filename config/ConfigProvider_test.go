@@ -54,6 +54,7 @@ var configFileContent = `[main]
 	NastyString = ""
 	NastyStringToReplace = ""
 	HostcheckAlias = "hostcheck"
+	ClientTimeout = "30"
 
 [InfluxDB "nagflux"]
 	Enabled = true
@@ -66,8 +67,9 @@ var configFileContent = `[main]
 	Enabled = true
 	Version = 1.0
 	Address = "http://127.0.0.1:8086"
-	Arguments = "precision=ms&u=root&p=root&db=fast"
+	Arguments = "precision=ms&u=root&p=root"
 	StopPullingDataIfDown = false
+	HealthUrl = "/ping"
 
 [ElasticsearchGlobal]
 	HostcheckAlias = "hostcheck"
