@@ -16,6 +16,7 @@ import (
 	"os"
 	"sync"
 	"time"
+	"strconv"
 )
 
 //Worker reads data from the queue and sends them to the influxdb.
@@ -84,38 +85,56 @@ func (worker *Worker) Stop() {
 func (worker Worker) run() {
 	var queries []collector.Printable
 	var query collector.Printable
+	var test bool
 	for {
-		if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
-			if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
-				select {
-				case <-worker.quit:
-					worker.log.Debug("InfluxWorker(" + worker.target.Name + ") quitting...")
-					worker.sendBuffer(queries)
-					worker.quit <- true
-					return
-				case query = <-worker.jobs:
-					if query.TestTargetFilter(worker.target.Name) {
-						queries = append(queries, query)
-						if len(queries) == 500 {
-							worker.sendBuffer(queries)
-							queries = queries[:0]
-						}
-					}
-				case <-time.After(dataTimeout):
-					worker.sendBuffer(queries)
-					queries = queries[:0]
+		select {
+		case <-worker.quit:
+			worker.log.Debug("InfluxWorker(" + worker.target.Name + ") quitting...")
+			worker.sendBuffer(queries)
+			worker.quit <- true
+			return
+		case query = <-worker.jobs:
+			
+		    if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
+		    	if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
+		    			if query.TestTargetFilter(worker.target.Name) {
+		    				queries = append(queries, query)
+		    				if len(queries) == 500 {
+		    					worker.sendBuffer(queries)
+		    					queries = queries[:0]
+							}
+						}	
+				} else {
+					time.Sleep(time.Duration(10) * time.Second)
+					//Test Database
+					test=worker.connector.TestDatabaseExists()
+					worker.log.Debug("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
 				}
 			} else {
-				//Test Database
-				worker.connector.TestDatabaseExists()
+				//Test Influxdb
 				time.Sleep(time.Duration(10) * time.Second)
+				worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
+				
 			}
-		} else {
-			//Test Influxdb
-			worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
-			time.Sleep(time.Duration(10) * time.Second)
+		case <-time.After(dataTimeout):
+		    if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
+		    	if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
+     				worker.sendBuffer(queries)
+					queries = queries[:0]
+				} else {
+					time.Sleep(time.Duration(10) * time.Second)
+					//Test Database
+					test=worker.connector.TestDatabaseExists()
+					worker.log.Debug("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
+				}
+			} else {
+				//Test Influxdb
+				time.Sleep(time.Duration(10) * time.Second)
+				worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
+				
+			}
 		}
-	}
+ 	}
 }
 
 //Sends the given queries to the influxdb.
@@ -207,7 +226,7 @@ func (worker Worker) readQueriesFromQueue() []string {
 //sends the raw data to influxdb and returns an err if given.
 func (worker Worker) sendData(rawData []byte, log bool) error {
 	if log {
-		worker.log.Debug("\n" + string(rawData))
+		worker.log.Debug("sendData ("+ worker.target.Name + ")\n" + string(rawData))
 	}
 	req, err := http.NewRequest("POST", worker.connection, bytes.NewBuffer(rawData))
 	if err != nil {

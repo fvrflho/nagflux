@@ -31,7 +31,7 @@ type Stoppable interface {
 const updateRate = 1
 
 //nagfluxVersion contains the current Github-Release
-const nagfluxVersion string = "v0.4.1"
+const nagfluxVersion string = "v0.4.2"
 
 var log *factorlog.FactorLog
 var quit = make(chan bool)
@@ -46,8 +46,7 @@ Commandline Parameter:
 -configPath Path to the config file. If no file path is given the default is ./config.gcfg.
 -V Print version and exit
 
-For further informations / bugs reportes: https://github.com/ConSol/nagflux
-`)
+For further informations / bugs reportes: https://github.com/ConSol/nagflux`)
 	}
 	flag.StringVar(&configPath, "configPath", "config.gcfg", "path to the config file")
 	flag.BoolVar(&printver, "V", false, "print version and exit")
@@ -94,7 +93,7 @@ For further informations / bugs reportes: https://github.com/ConSol/nagflux
 			resultQueues[target],
 			influxConfig.Address, influxConfig.Arguments, cfg.Main.DumpFile, influxConfig.Version,
 			cfg.Main.InfluxWorker, cfg.Main.MaxInfluxWorker, cfg.InfluxDBGlobal.CreateDatabaseIfNotExists,
-			influxConfig.StopPullingDataIfDown, target, cfg.InfluxDBGlobal.ClientTimeout,
+			influxConfig.StopPullingDataIfDown, target, cfg.InfluxDBGlobal.ClientTimeout,influxConfig.HealthUrl,
 		)
 		stoppables = append(stoppables, influx)
 		influxDumpFileCollector := nagflux.NewDumpfileCollector(resultQueues[target], cfg.Main.DumpFile, target, cfg.Main.FileBufferSize)

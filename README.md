@@ -3,9 +3,23 @@
 [![Circle CI](https://circleci.com/gh/ConSol/nagflux/tree/master.svg?style=svg)](https://circleci.com/gh/ConSol/nagflux/tree/master)
 [![Coverage Status](https://coveralls.io/repos/ConSol/nagflux/badge.svg?branch=master&service=github)](https://coveralls.io/github/ConSol/nagflux?branch=master)
 # Nagflux
+
+ (forked from github.com/griesbacher/nagflux)
+
 #### A connector which transforms performancedata from Nagios/Icinga(2)/Naemon to InfluxDB/Elasticsearch
 Nagflux collects data from the NagiosSpoolfileFolder and adds informations from Livestatus. This data is sent to an InfluxDB, to get displayed by Grafana. Therefor is the tool [Histou](https://github.com/Griesbacher/histou) gives you the possibility to add Templates to Grafana.
 <p>Nagflux can be seen as the process_perfdata.pl script from PNP4Nagios.</p>
+
+
+<p>The data storage is no restricted to InfluxDB, but can be any target which support the InfluxDB http Line Protocol. TCP and UDP servers are not supported.
+E.g Victoriametrics and Telegraf work.
+As they have no db concept, the check if the database exists is omitted if "db=x" is not found in the arguments.
+Additionally a custom health check url can be set. It not set the default is "/ping" from InfluxDB.
+</p>
+
+#### Limitations:
+Nagflux only provides the timestamp in milliseconds.
+
 
 ## Dependencies
 

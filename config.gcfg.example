@@ -69,6 +69,24 @@
     Arguments = "precision=ms&u=root&p=root&db=fast"
     StopPullingDataIfDown = false
 
+[InfluxDB "victoriametrics"]
+    Enabled = false
+    Version = 1.0
+    Address = "http://user:password@127.0.0.1:8428"
+    Arguments = "precision=ms"
+    StopPullingDataIfDown = false
+    HealthUrl="/health"
+
+[InfluxDB "telegraf"]
+    Enabled = false
+    Version = 1.0
+    Address = "http://user:password@127.0.0.1:8186"
+    Arguments = "precision=ms"
+    StopPullingDataIfDown = false
+    # telegraf has no default health check, but can be added as additional output webserver:
+    HealthUrl="http://localhost:8080"
+
+
 [ElasticsearchGlobal]
     HostcheckAlias = "hostcheck"
     NumberOfShards = 1
