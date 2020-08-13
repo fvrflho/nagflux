@@ -85,55 +85,43 @@ func (worker *Worker) Stop() {
 func (worker Worker) run() {
 	var queries []collector.Printable
 	var query collector.Printable
-	var test bool
 	for {
-		select {
-		case <-worker.quit:
-			worker.log.Debug("InfluxWorker(" + worker.target.Name + ") quitting...")
-			worker.sendBuffer(queries)
-			worker.quit <- true
-			return
-		case query = <-worker.jobs:
-			
-		    if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
-		    	if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
-		    			if query.TestTargetFilter(worker.target.Name) {
-		    				queries = append(queries, query)
-		    				if len(queries) == 500 {
-		    					worker.sendBuffer(queries)
-		    					queries = queries[:0]
+		if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
+			if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
+				select {
+				case <-worker.quit:
+					worker.log.Debug("InfluxWorker(" + worker.target.Name + ") quitting...")
+					worker.sendBuffer(queries)
+					worker.quit <- true
+					return
+				case query = <-worker.jobs:
+					test:= query.TestTargetFilter(worker.target.Name)
+					worker.log.Trace("TestTargetFilter (" + worker.target.Name + "): "+ strconv.FormatBool(test)  )
+					if test {
+							queries = append(queries, query)
+							if len(queries) == 500 {
+								worker.sendBuffer(queries)
+								queries = queries[:0]
 							}
 						}	
-				} else {
-					time.Sleep(time.Duration(10) * time.Second)
-					//Test Database
-					test=worker.connector.TestDatabaseExists()
-					worker.log.Debug("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
-				}
-			} else {
-				//Test Influxdb
-				time.Sleep(time.Duration(10) * time.Second)
-				worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
-				
-			}
-		case <-time.After(dataTimeout):
-		    if !worker.stopReadingDataIfDown || worker.connector.IsAlive() {
-		    	if !worker.stopReadingDataIfDown || worker.connector.DatabaseExists() {
-     				worker.sendBuffer(queries)
+				case <-time.After(dataTimeout):
+					worker.sendBuffer(queries)
 					queries = queries[:0]
-				} else {
-					time.Sleep(time.Duration(10) * time.Second)
-					//Test Database
-					test=worker.connector.TestDatabaseExists()
-					worker.log.Debug("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
-				}
+				}		
 			} else {
-				//Test Influxdb
 				time.Sleep(time.Duration(10) * time.Second)
-				worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
-				
+				//Test Database
+				test:=worker.connector.TestDatabaseExists()
+				worker.log.Trace("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
 			}
+		} else {
+			//Test Influxdb
+			time.Sleep(time.Duration(10) * time.Second)
+			test:=worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
+			worker.log.Trace("Retry TestIfIsAlive InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
+			
 		}
+		
  	}
 }
 
