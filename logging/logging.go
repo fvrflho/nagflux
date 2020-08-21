@@ -7,7 +7,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-const logFormat = "%{Date} %{Time} %{Severity}: %{Message}"
+const logFormat = `[%{Date} %{Time "15:04:05.000"}][%{Severity}][%{File}:%{Line}] %{Message}`
 const logColors = "%{Color \"white\" \"DEBUG\"}%{Color \"magenta\" \"WARN\"}%{Color \"red\" \"CRITICAL\"}"
 
 var singleLogger *factorlog.FactorLog
