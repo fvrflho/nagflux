@@ -1,8 +1,9 @@
 package config
 
 import (
-	"github.com/ConSol/nagflux/data"
 	"sync"
+
+	"github.com/ConSol/nagflux/data"
 )
 
 //PauseMap is a map to store if an target requested pause or not

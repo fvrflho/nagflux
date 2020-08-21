@@ -2,9 +2,10 @@ package spoolfile
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/helper"
-	"testing"
 )
 
 var TestPerformanceData = []struct {

@@ -2,12 +2,13 @@ package livestatus
 
 import (
 	"fmt"
-	"github.com/ConSol/nagflux/logging"
-	"github.com/kdar/factorlog"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/ConSol/nagflux/logging"
+	"github.com/kdar/factorlog"
 )
 
 //CacheBuilder fetches data from livestatus.

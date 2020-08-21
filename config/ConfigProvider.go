@@ -1,8 +1,9 @@
 package config
 
 import (
-	"gopkg.in/gcfg.v1"
 	"sync"
+
+	"gopkg.in/gcfg.v1"
 )
 
 var config Config

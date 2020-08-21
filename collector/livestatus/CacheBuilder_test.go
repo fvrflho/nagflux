@@ -1,10 +1,11 @@
 package livestatus
 
 import (
-	"github.com/ConSol/nagflux/logging"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/ConSol/nagflux/logging"
 )
 
 func TestNewCacheBuilder(t *testing.T) {
@@ -16,7 +17,7 @@ func TestNewCacheBuilder(t *testing.T) {
 	}
 }
 
-func DisabledTestServiceInDowntime(t *testing.T) {
+func TestDisabledServiceInDowntime(t *testing.T) {
 	logging.InitTestLogger()
 	queries := map[string]string{}
 	queries[QueryForServicesInDowntime] = "1,2;host1;service1\n"
@@ -32,7 +33,7 @@ func DisabledTestServiceInDowntime(t *testing.T) {
 	cacheBuilder.Stop()
 	livestatus.StopMockLivestatus()
 
-	intern := map[string]map[string]string{"host1": map[string]string{"": "1", "service1": "1"}, "host2": map[string]string{"": "2"}}
+	intern := map[string]map[string]string{"host1": {"": "1", "service1": "1"}, "host2": {"": "2"}}
 	cacheBuilder.mutex.Lock()
 	if !reflect.DeepEqual(cacheBuilder.downtimeCache.downtime, intern) {
 		t.Errorf("Internall Cache does not fit.\nExpexted:%s\nResult:%s\n", intern, cacheBuilder.downtimeCache.downtime)

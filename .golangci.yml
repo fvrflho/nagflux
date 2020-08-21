@@ -1,0 +1,75 @@
+linters-settings:
+  gocyclo:
+    min-complexity: 20
+  goconst:
+    min-len: 8
+    min-occurrences: 12
+  lll:
+    line-length: 120
+  gocritic:
+    enabled-tags:
+      - performance
+      - style
+      - experimental
+    disabled-checks:
+      - emptyFallthrough
+      - paramTypeCombine
+      - unnamedResult
+      - exitAfterDefer
+    settings:
+      rangeValCopy:
+        sizeThreshold: 32
+  funlen:
+    lines: 150
+    statements: 120
+  gocognit:
+    min-complexity: 35
+  exhaustive:
+    default-signifies-exhaustive: true
+linters:
+  enable-all: true
+  disable:
+    - wsl
+    - lll
+    - gofumpt
+    - gochecknoglobals
+    - testpackage
+    - nlreturn
+    - gomnd
+    - noctx
+    - stylecheck
+    - goerr113
+    - nestif
+    - prealloc
+    - maligned
+    - interfacer
+    - unconvert
+    - whitespace
+    - misspell
+    - golint
+    - ineffassign
+    - godox
+    - gosimple
+    - godot
+    - gosec
+    - gocyclo
+    - gocritic
+    - bodyclose
+    - errcheck
+    - gocognit
+    - gochecknoinits
+  fast: false
+issues:
+  max-same-issues: 0
+  exclude-use-default: true
+  exclude:
+    - 'Magic number: 1\D '
+    - 'Magic number: 2\D '
+    - 'Magic number: 10\D '
+    - 'Magic number: 100\D '
+    - 'Magic number: 500\D '
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - gomnd

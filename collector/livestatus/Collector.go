@@ -2,15 +2,16 @@ package livestatus
 
 import (
 	"fmt"
+	"regexp"
+	"strings"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/data"
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
-	"regexp"
-	"strings"
-	"time"
 )
 
 //Collector fetches data from livestatus.

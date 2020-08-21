@@ -1,14 +1,15 @@
 package spoolfile
 
 import (
+	"io/ioutil"
+	"path"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/collector/livestatus"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/ConSol/nagflux/statistics"
-	"io/ioutil"
-	"path"
-	"time"
 )
 
 const (

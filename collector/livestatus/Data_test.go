@@ -2,9 +2,10 @@ package livestatus
 
 import (
 	"fmt"
-	"github.com/ConSol/nagflux/helper"
 	"reflect"
 	"testing"
+
+	"github.com/ConSol/nagflux/helper"
 )
 
 func TestDataSanitizeValues(t *testing.T) {

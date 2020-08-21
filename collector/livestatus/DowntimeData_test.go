@@ -1,10 +1,10 @@
 package livestatus
 
 import (
-	"fmt"
+	"testing"
+
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/logging"
-	"testing"
 )
 
 func TestSanitizeValuesDowntime(t *testing.T) {
@@ -33,7 +33,7 @@ messages,host=host\ 1,service=service\ 1,type=downtime,author=philip message="Do
 
 func TestPrintElasticsearchDowntime(t *testing.T) {
 	logging.InitTestLogger()
-	config.InitConfigFromString(fmt.Sprintf(Config, "monthly"))
+	config.InitConfigFromString(Config)
 	down := DowntimeData{Data: Data{hostName: "host 1", serviceDisplayName: "service 1", author: "philip", entryTime: "1458988932000"}, endTime: "123"}
 	if !didThatPanic(down.PrintForElasticsearch, "1.0", "index") {
 		t.Errorf("This should panic, due to unsuported elasticsearch version")

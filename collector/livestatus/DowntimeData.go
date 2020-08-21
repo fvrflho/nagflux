@@ -2,10 +2,11 @@ package livestatus
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/logging"
-	"strings"
 )
 
 //DowntimeData adds Comments types to the livestatus data

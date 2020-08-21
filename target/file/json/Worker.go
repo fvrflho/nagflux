@@ -3,13 +3,14 @@ package json
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/data"
-	"github.com/kdar/factorlog"
 	"io/ioutil"
 	"os"
 	"path"
 	"time"
+
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/data"
+	"github.com/kdar/factorlog"
 )
 
 type JSONFileWorker struct {

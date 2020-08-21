@@ -2,14 +2,15 @@ package nagflux
 
 import (
 	"encoding/csv"
+	"os"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/collector/spoolfile"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
-	"os"
-	"time"
 )
 
 //FileCollector provides a interface to nagflux, in which you could insert influxdb queries.

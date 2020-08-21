@@ -4,17 +4,18 @@ import (
 	"bufio"
 	"errors"
 	"fmt"
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/collector/livestatus"
-	"github.com/ConSol/nagflux/helper"
-	"github.com/ConSol/nagflux/logging"
-	"github.com/ConSol/nagflux/statistics"
 	"io"
 	"os"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/collector/livestatus"
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol/nagflux/statistics"
 )
 
 const (

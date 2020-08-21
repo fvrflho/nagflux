@@ -4,39 +4,39 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"regexp"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/data"
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
-	"io/ioutil"
-	"net/http"
-	"time"
-	"regexp"
 )
 
 //Connector makes the basic connection to an Influxdb.
 type Connector struct {
-	connectionHost        string
-	connectionArgs        string
-	dumpFile              string
-	workers               []*Worker
-	maxWorkers            int
-	jobs                  chan collector.Printable
-	quit                  chan bool
-	log                   *factorlog.FactorLog
-	version               string
-	isAlive               bool
-	databaseExists        bool
-	databaseName          string
-	httpClient            http.Client
-	target                data.Target
-	stopReadingDataIfDown bool
-	clientTimeout int
+	connectionHost            string
+	connectionArgs            string
+	dumpFile                  string
+	workers                   []*Worker
+	maxWorkers                int
+	jobs                      chan collector.Printable
+	quit                      chan bool
+	log                       *factorlog.FactorLog
+	version                   string
+	isAlive                   bool
+	databaseExists            bool
+	databaseName              string
+	httpClient                http.Client
+	target                    data.Target
+	stopReadingDataIfDown     bool
+	clientTimeout             int
 	createDatabaseIfNotExists bool
-	healthUrl             string
-	
+	healthUrl                 string
 }
 
 //ConnectorFactory Constructor which will create some workers if the connection is established.
@@ -48,7 +48,6 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 		databaseName = db
 	}
 
-
 	timeout := time.Duration(time.Duration(clientTimeout) * time.Second)
 	transport := &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 	client := http.Client{Timeout: timeout, Transport: transport}
@@ -56,30 +55,26 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 		connectionHost: connectionHost, connectionArgs: connectionArgs, dumpFile: dumpFile,
 		workers: make([]*Worker, workerAmount), maxWorkers: maxWorkers, jobs: jobs, quit: make(chan bool),
 		log: logging.GetLogger(), version: version, isAlive: false, databaseExists: false, databaseName: databaseName,
-		httpClient: client, target: target, stopReadingDataIfDown: stopReadingDataIfDown, clientTimeout: clientTimeout, createDatabaseIfNotExists: createDatabaseIfNotExists,healthUrl: healthUrl,
+		httpClient: client, target: target, stopReadingDataIfDown: stopReadingDataIfDown, clientTimeout: clientTimeout, createDatabaseIfNotExists: createDatabaseIfNotExists, healthUrl: healthUrl,
 	}
 
-    if createDatabaseIfNotExists && databaseName=="" {
+	if createDatabaseIfNotExists && databaseName == "" {
 		s.log.Info("InfluxDB(" + target.Name + ") Database not found, db creation not possible -> createDatabaseIfNotExists switched to false")
-		s.createDatabaseIfNotExists=false
+		s.createDatabaseIfNotExists = false
 		createDatabaseIfNotExists = false
 	}
 
-
 	// set external health check url "healthUrl":
-	matched, _ := regexp.MatchString("http.*://",healthUrl)
-	if ( matched == false ) {
-		if ( healthUrl != "") {
+	matched, _ := regexp.MatchString("http.*://", healthUrl)
+	if matched == false {
+		if healthUrl != "" {
 			// make local uri global:
-			s.healthUrl= connectionHost+healthUrl
+			s.healthUrl = connectionHost + healthUrl
 		} else {
 			// default for influxDB:
-			s.healthUrl=connectionHost+"/ping"
+			s.healthUrl = connectionHost + "/ping"
 		}
 	}
-	
-
-
 
 	// if  createDatabaseIfNotExists is false, set flag databaseExists flag to true!
 	if !createDatabaseIfNotExists {
@@ -111,18 +106,18 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 			s.log.Debug("Influxdb(" + target.Name + ") is running")
 		}
 		if createDatabaseIfNotExists {
-		    s.TestDatabaseExists()
-		    for i := 0; i < 5 && !s.databaseExists; i++ {
-			    time.Sleep(time.Duration(2) * time.Second)
-			    if createDatabaseIfNotExists {
-				    s.CreateDatabase(loginData)
-			    }
-			    s.TestDatabaseExists()
-		    }
-		    if !s.databaseExists {
-			    s.log.Critical("InfluxDB Database(" + databaseName + ") does not exists and Nagflux was not able to create it")
-		    }
-	    }
+			s.TestDatabaseExists()
+			for i := 0; i < 5 && !s.databaseExists; i++ {
+				time.Sleep(time.Duration(2) * time.Second)
+				if createDatabaseIfNotExists {
+					s.CreateDatabase(loginData)
+				}
+				s.TestDatabaseExists()
+			}
+			if !s.databaseExists {
+				s.log.Critical("InfluxDB Database(" + databaseName + ") does not exists and Nagflux was not able to create it")
+			}
+		}
 	}
 
 	for w := 0; w < workerAmount; w++ {
@@ -219,7 +214,7 @@ func (connector *Connector) TestDatabaseExists() bool {
 	if !connector.createDatabaseIfNotExists {
 		connector.log.Debug("Skipped TestDatabaseExists:" + connector.databaseName)
 		return true
-	} 
+	}
 	resp, err := connector.httpClient.Get(connector.connectionHost + "/query?q=show%20databases&" + connector.connectionArgs)
 	if err != nil {
 		return false

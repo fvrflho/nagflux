@@ -4,13 +4,14 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io"
+	"os"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/data"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
-	"io"
-	"os"
-	"time"
 )
 
 //DumpfileCollector collects queries from old runs, which could not been completed.
@@ -89,6 +90,9 @@ func (dump *DumpfileCollector) run() {
 					logging.GetLogger().Warn("NagfluxDumpfileCollector: filebuffer is too small")
 				} else {
 					err = os.Remove(dump.dumpFile)
+					if err != nil {
+						dump.log.Error(err)
+					}
 				}
 			} else {
 				buffer := bytes.NewBuffer(nil)

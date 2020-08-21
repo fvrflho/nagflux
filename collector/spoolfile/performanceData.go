@@ -2,6 +2,7 @@ package spoolfile
 
 import (
 	"fmt"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/helper"

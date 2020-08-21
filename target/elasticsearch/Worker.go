@@ -5,17 +5,18 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/helper"
-	"github.com/ConSol/nagflux/logging"
-	"github.com/ConSol/nagflux/statistics"
-	"github.com/kdar/factorlog"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol/nagflux/statistics"
+	"github.com/kdar/factorlog"
 )
 
 //Worker reads data from the queue and sends them to the influxdb.
@@ -40,8 +41,6 @@ const dataTimeout = time.Duration(20) * time.Second
 var errorInterrupted = errors.New("Got interrupted")
 var errorBadRequest = errors.New("400 Bad Request")
 var errorHTTPClient = errors.New("Http Client got an error")
-var errorFailedToSend = errors.New("Could not send data")
-var error500 = errors.New("Error 500")
 
 //WorkerGenerator generates a new Worker and starts it.
 func WorkerGenerator(jobs chan collector.Printable, connection, index, dumpFile, version string, connector *Connector) func(workerId int) *Worker {
@@ -263,12 +262,6 @@ func (worker Worker) printErrors(result JSONResult, rawData []byte) {
 	ioutil.WriteFile(worker.dumpFile+".currupt.json", rawData, 0644)
 	ioutil.WriteFile(worker.dumpFile+".error.json", []byte(fmt.Sprintf("%v", errors)), 0644)
 	panic("")
-}
-
-//Logs a http response to warn.
-func (worker Worker) logHTTPResponse(resp *http.Response) {
-	body, _ := ioutil.ReadAll(resp.Body)
-	worker.log.Warnf("Influx status: %s - %s", resp.Status, string(body))
 }
 
 //Waits on an internal quit signal.

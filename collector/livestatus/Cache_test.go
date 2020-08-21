@@ -12,19 +12,19 @@ func TestAddDowntime(t *testing.T) {
 	}
 
 	cache.addDowntime("hostname", "servicename", "123")
-	intern := map[string]map[string]string{"hostname": map[string]string{"servicename": "123"}}
+	intern := map[string]map[string]string{"hostname": {"servicename": "123"}}
 	if !reflect.DeepEqual(cache.downtime, intern) {
 		t.Error("Added element is missing.")
 	}
 
 	cache.addDowntime("hostname2", "", "123")
-	intern = map[string]map[string]string{"hostname": map[string]string{"servicename": "123"}, "hostname2": map[string]string{"": "123"}}
+	intern = map[string]map[string]string{"hostname": {"servicename": "123"}, "hostname2": {"": "123"}}
 	if !reflect.DeepEqual(cache.downtime, intern) {
 		t.Error("Added element is missing.")
 	}
 
 	cache.addDowntime("hostname2", "", "1")
-	intern = map[string]map[string]string{"hostname": map[string]string{"servicename": "123"}, "hostname2": map[string]string{"": "123"}}
+	intern = map[string]map[string]string{"hostname": {"servicename": "123"}, "hostname2": {"": "123"}}
 	if reflect.DeepEqual(cache.downtime, intern) {
 		t.Error("Added element is missing.")
 	}

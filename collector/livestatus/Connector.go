@@ -4,10 +4,11 @@ import (
 	"bufio"
 	"encoding/csv"
 	"fmt"
-	"github.com/kdar/factorlog"
 	"io"
 	"net"
 	"strings"
+
+	"github.com/kdar/factorlog"
 )
 
 //Connector fetches data from livestatus.
@@ -36,7 +37,7 @@ func (connector Connector) connectToLivestatus(query string, result chan []strin
 	}
 
 	defer conn.Close()
-	fmt.Fprintf(conn, query)
+	fmt.Fprint(conn, query)
 	reader := bufio.NewReader(conn)
 
 	length := 1

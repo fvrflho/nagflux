@@ -1,10 +1,10 @@
 package livestatus
 
 import (
-	"fmt"
+	"testing"
+
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/logging"
-	"testing"
 )
 
 var PrintCommentData = []struct {
@@ -65,7 +65,7 @@ func TestPrintInfluxdbComment(t *testing.T) {
 
 func TestPrintElasticsearchComment(t *testing.T) {
 	logging.InitTestLogger()
-	config.InitConfigFromString(fmt.Sprintf(Config, "monthly"))
+	config.InitConfigFromString(Config)
 	comment := CommentData{Data: Data{hostName: "host 1", serviceDisplayName: "service 1", author: "philip", comment: "hallo world", entryTime: "1458988932000"}, entryType: "1"}
 	if !didThatPanic(comment.PrintForElasticsearch, "1.0", "index") {
 		t.Error("This should panic, due to unsuported elasticsearch version")

@@ -2,8 +2,9 @@ package helper
 
 import (
 	"fmt"
-	"github.com/ConSol/nagflux/config"
 	"strings"
+
+	"github.com/ConSol/nagflux/config"
 )
 
 //CreateJSONFromStringMap creates a part of a JSON object

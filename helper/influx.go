@@ -1,8 +1,9 @@
 package helper
 
 import (
-	"github.com/ConSol/nagflux/config"
 	"strings"
+
+	"github.com/ConSol/nagflux/config"
 )
 
 //SanitizeInfluxInput adds backslashes to special chars.

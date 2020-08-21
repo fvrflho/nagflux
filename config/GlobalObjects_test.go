@@ -1,8 +1,9 @@
 package config
 
 import (
-	"github.com/ConSol/nagflux/data"
 	"testing"
+
+	"github.com/ConSol/nagflux/data"
 )
 
 func TestStoreValue(t *testing.T) {

@@ -2,14 +2,15 @@ package elasticsearch
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/logging"
 	"github.com/kdar/factorlog"
-	"net/http"
-	"strings"
-	"time"
 )
 
 //Connector makes the basic connection to an influxdb.

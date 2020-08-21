@@ -2,10 +2,11 @@ package livestatus
 
 import (
 	"fmt"
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/logging"
 	"testing"
 	"time"
+
+	"github.com/ConSol/nagflux/collector"
+	"github.com/ConSol/nagflux/logging"
 )
 
 func TestNewLivestatusCollector(t *testing.T) {

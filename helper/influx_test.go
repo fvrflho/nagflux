@@ -1,9 +1,10 @@
 package helper
 
 import (
-	"github.com/ConSol/nagflux/config"
 	"reflect"
 	"testing"
+
+	"github.com/ConSol/nagflux/config"
 )
 
 var SanitizeInfluxData = []struct {

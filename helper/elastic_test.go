@@ -2,8 +2,9 @@ package helper
 
 import (
 	"fmt"
-	"github.com/ConSol/nagflux/config"
 	"testing"
+
+	"github.com/ConSol/nagflux/config"
 )
 
 var CreateJSONFromStringMapData = []struct {

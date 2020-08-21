@@ -1,9 +1,10 @@
 package logging
 
 import (
-	"github.com/kdar/factorlog"
 	"io"
 	"os"
+
+	"github.com/kdar/factorlog"
 )
 
 const logFormat = "%{Date} %{Time} %{Severity}: %{Message}"

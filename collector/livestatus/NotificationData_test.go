@@ -1,10 +1,10 @@
 package livestatus
 
 import (
-	"fmt"
+	"testing"
+
 	"github.com/ConSol/nagflux/config"
 	"github.com/ConSol/nagflux/logging"
-	"testing"
 )
 
 func TestSanitizeValuesNotification(t *testing.T) {
@@ -99,7 +99,7 @@ const Config = `[main]
 
 func TestPrintForElasticsearchNotification(t *testing.T) {
 	logging.InitTestLogger()
-	config.InitConfigFromString(fmt.Sprintf(Config, "monthly"))
+	config.InitConfigFromString(Config)
 	notification := NotificationData{Data: Data{hostName: "host 1", author: "philip", entryTime: "1458988932000"}, notificationType: "HOST NOTIFICATION", notificationLevel: "WARN"}
 	if !didThatPanic(notification.PrintForElasticsearch, "1.0", "index") {
 		t.Error("Printed for unsuported elasticsearch version but got a response")

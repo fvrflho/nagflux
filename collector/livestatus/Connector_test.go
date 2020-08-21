@@ -2,14 +2,15 @@ package livestatus
 
 import (
 	"bufio"
-	"github.com/ConSol/nagflux/helper"
-	"github.com/ConSol/nagflux/logging"
 	"log"
 	"net"
 	"reflect"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol/nagflux/logging"
 )
 
 type MockLivestatus struct {

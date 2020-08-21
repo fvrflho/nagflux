@@ -4,6 +4,13 @@ import (
 	"bytes"
 	"crypto/tls"
 	"errors"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"strconv"
+	"sync"
+	"time"
+
 	"github.com/ConSol/nagflux/collector"
 	"github.com/ConSol/nagflux/collector/nagflux"
 	"github.com/ConSol/nagflux/data"
@@ -11,12 +18,6 @@ import (
 	"github.com/ConSol/nagflux/logging"
 	"github.com/ConSol/nagflux/statistics"
 	"github.com/kdar/factorlog"
-	"io/ioutil"
-	"net/http"
-	"os"
-	"sync"
-	"time"
-	"strconv"
 )
 
 //Worker reads data from the queue and sends them to the influxdb.
@@ -95,34 +96,34 @@ func (worker Worker) run() {
 					worker.quit <- true
 					return
 				case query = <-worker.jobs:
-					test:= query.TestTargetFilter(worker.target.Name)
-					worker.log.Trace("TestTargetFilter (" + worker.target.Name + "): "+ strconv.FormatBool(test)  )
+					test := query.TestTargetFilter(worker.target.Name)
+					worker.log.Trace("TestTargetFilter (" + worker.target.Name + "): " + strconv.FormatBool(test))
 					if test {
-							queries = append(queries, query)
-							if len(queries) == 500 {
-								worker.sendBuffer(queries)
-								queries = queries[:0]
-							}
-						}	
+						queries = append(queries, query)
+						if len(queries) == 500 {
+							worker.sendBuffer(queries)
+							queries = queries[:0]
+						}
+					}
 				case <-time.After(dataTimeout):
 					worker.sendBuffer(queries)
 					queries = queries[:0]
-				}		
+				}
 			} else {
 				time.Sleep(time.Duration(10) * time.Second)
 				//Test Database
-				test:=worker.connector.TestDatabaseExists()
-				worker.log.Trace("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
+				test := worker.connector.TestDatabaseExists()
+				worker.log.Trace("Retry TestDatabaseExists InfluxWorker(" + worker.target.Name + "): " + strconv.FormatBool(test))
 			}
 		} else {
 			//Test Influxdb
 			time.Sleep(time.Duration(10) * time.Second)
-			test:=worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
-			worker.log.Trace("Retry TestIfIsAlive InfluxWorker(" + worker.target.Name + "): "+ strconv.FormatBool(test) )
-			
+			test := worker.connector.TestIfIsAlive(worker.stopReadingDataIfDown)
+			worker.log.Trace("Retry TestIfIsAlive InfluxWorker(" + worker.target.Name + "): " + strconv.FormatBool(test))
+
 		}
-		
- 	}
+
+	}
 }
 
 //Sends the given queries to the influxdb.
@@ -214,7 +215,7 @@ func (worker Worker) readQueriesFromQueue() []string {
 //sends the raw data to influxdb and returns an err if given.
 func (worker Worker) sendData(rawData []byte, log bool) error {
 	if log {
-		worker.log.Debug("sendData ("+ worker.target.Name + ")\n" + string(rawData))
+		worker.log.Debug("sendData (" + worker.target.Name + ")\n" + string(rawData))
 	}
 	req, err := http.NewRequest("POST", worker.connection, bytes.NewBuffer(rawData))
 	if err != nil {
