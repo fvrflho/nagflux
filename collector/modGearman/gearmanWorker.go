@@ -88,11 +88,18 @@ func (g GearmanWorker) Stop() {
 
 func (g GearmanWorker) run() {
 	for {
-		if err := g.startGearmanWorker(); err != nil {
-			g.log.Warn(err)
-			time.Sleep(time.Duration(30) * time.Second)
-		} else {
+		err := g.startGearmanWorker()
+		if err != nil {
 			return
+		}
+
+		// interruptable retry in 30 seconds
+		g.log.Warn(err)
+		select {
+		case <-g.quit:
+			g.quit <- true
+			return
+		case <-time.After(time.Duration(30) * time.Second):
 		}
 	}
 }
