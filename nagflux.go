@@ -198,7 +198,6 @@ func cleanUp(itemsToStop []Stoppable, resultQueues collector.ResultQueues) {
 	log.Info("Cleaning up...")
 	for i := len(itemsToStop) - 1; i >= 0; i-- {
 		itemsToStop[i].Stop()
-		time.Sleep(500 * time.Millisecond)
 	}
 	for _, q := range resultQueues {
 		log.Debugf("Remaining queries %d", len(q))
