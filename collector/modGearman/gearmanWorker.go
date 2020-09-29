@@ -89,7 +89,7 @@ func (g GearmanWorker) Stop() {
 func (g GearmanWorker) run() {
 	for {
 		err := g.startGearmanWorker()
-		if err != nil {
+		if err == nil {
 			return
 		}
 
@@ -100,6 +100,7 @@ func (g GearmanWorker) run() {
 			g.quit <- true
 			return
 		case <-time.After(time.Duration(30) * time.Second):
+			// retry connection after 30 seconds
 		}
 	}
 }
