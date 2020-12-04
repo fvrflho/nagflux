@@ -10,19 +10,22 @@ import (
 	"github.com/ConSol/nagflux/helper"
 	"github.com/ConSol/nagflux/helper/crypto"
 	"github.com/ConSol/nagflux/logging"
+	libworker "github.com/appscode/g2/worker"
 	"github.com/kdar/factorlog"
-	"github.com/mikespook/gearman-go/worker"
 )
 
 //GearmanWorker queries the gearmanserver and adds the extraced perfdata to the queue.
 type GearmanWorker struct {
-	quit                  chan bool
+	runQuit               chan bool
+	loadQuit              chan bool
+	pauseQuit             chan bool
 	results               collector.ResultQueues
 	nagiosSpoolfileWorker *spoolfile.NagiosSpoolfileWorker
 	aesECBDecrypter       *crypto.AESECBDecrypter
-	worker                *worker.Worker
+	worker                *libworker.Worker
 	log                   *factorlog.FactorLog
 	jobQueue              string
+	address               string
 }
 
 //NewGearmanWorker generates a new GearmanWorker.
@@ -38,13 +41,16 @@ func NewGearmanWorker(address, queue, key string, results collector.ResultQueues
 		}
 	}
 	worker := &GearmanWorker{
-		quit:    make(chan bool),
-		results: results,
+		runQuit:   make(chan bool, 1),
+		loadQuit:  make(chan bool, 1),
+		pauseQuit: make(chan bool, 1),
+		results:   results,
 		nagiosSpoolfileWorker: spoolfile.NewNagiosSpoolfileWorker(
 			-1, make(chan string), make(collector.ResultQueues), livestatusCacheBuilder, 4096, collector.AllFilterable,
 		),
 		aesECBDecrypter: decrypter,
-		worker:          createGearmanWorker(address),
+		worker:          nil,
+		address:         address,
 		log:             logging.GetLogger(),
 		jobQueue:        queue,
 	}
@@ -55,22 +61,20 @@ func NewGearmanWorker(address, queue, key string, results collector.ResultQueues
 	return worker
 }
 
-func createGearmanWorker(address string) *worker.Worker {
-	w := worker.New(worker.Unlimited)
-	w.AddServer("tcp4", address)
-	return w
-}
-
-func (g GearmanWorker) startGearmanWorker() error {
+func (g *GearmanWorker) startGearmanWorker() error {
+	g.shutdownGearmanWorker()
+	g.worker = libworker.New(libworker.OneByOne)
+	g.worker.AddServer("tcp4", g.address)
 	g.worker.ErrorHandler = func(err error) {
-		if err.Error() == "EOF" {
+		switch err.(type) {
+		case *libworker.WorkerDisconnectError:
 			g.log.Warn("Gearmand did not response. Connection closed")
-		} else {
+		default:
 			g.log.Warn(err)
 		}
-		g.run()
+		g.shutdownGearmanWorker()
 	}
-	g.worker.AddFunc(g.jobQueue, g.handelJob, worker.Unlimited)
+	g.worker.AddFunc(g.jobQueue, g.handelJob, libworker.Unlimited)
 	if err := g.worker.Ready(); err != nil {
 		return err
 	}
@@ -78,34 +82,48 @@ func (g GearmanWorker) startGearmanWorker() error {
 	return nil
 }
 
-//Stop stops the worker
-func (g GearmanWorker) Stop() {
+// shutdown gearman worker
+func (g *GearmanWorker) shutdownGearmanWorker() {
+	if g.worker == nil {
+		return
+	}
+	g.log.Warnf("shutting down worker")
+	g.worker.ErrorHandler = nil
+	g.worker.Shutdown()
 	g.worker.Close()
-	g.quit <- true
-	<-g.quit
+	g.worker = nil
+}
+
+//Stop stops the worker
+func (g *GearmanWorker) Stop() {
+	g.shutdownGearmanWorker()
+	g.runQuit <- true
+	g.loadQuit <- true
+	g.pauseQuit <- true
 	logging.GetLogger().Debug("GearmanWorker stopped")
 }
 
-func (g GearmanWorker) run() {
+func (g *GearmanWorker) run() {
 	for {
-		err := g.startGearmanWorker()
-		if err == nil {
-			return
+		if g.worker == nil {
+			err := g.startGearmanWorker()
+			if err != nil {
+				g.log.Warn(err)
+			}
 		}
 
-		// interruptable retry in 30 seconds
-		g.log.Warn(err)
+		// interruptable retry in 10 seconds
 		select {
-		case <-g.quit:
-			g.quit <- true
+		case <-g.runQuit:
+			g.shutdownGearmanWorker()
 			return
-		case <-time.After(time.Duration(30) * time.Second):
-			// retry connection after 30 seconds
+		case <-time.After(time.Duration(10) * time.Second):
+			// retry connection after 10 seconds
 		}
 	}
 }
 
-func (g GearmanWorker) handleLoad() {
+func (g *GearmanWorker) handleLoad() {
 	bufferLimit := int(float32(config.GetConfig().Main.BufferSize) * 0.90)
 	for {
 		for _, r := range g.results {
@@ -118,24 +136,22 @@ func (g GearmanWorker) handleLoad() {
 			}
 		}
 		select {
-		case <-g.quit:
-			g.quit <- true
+		case <-g.loadQuit:
 			return
 		case <-time.After(time.Duration(1) * time.Second):
 		}
 	}
 }
 
-func (g GearmanWorker) handlePause() {
+func (g *GearmanWorker) handlePause() {
 	pause := false
 	for {
 		select {
-		case <-g.quit:
-			g.quit <- true
+		case <-g.pauseQuit:
 			return
 		case <-time.After(time.Duration(1) * time.Second):
 			globalPause := config.IsAnyTargetOnPause()
-			if pause != globalPause {
+			if pause != globalPause && g.worker != nil {
 				if globalPause {
 					g.worker.Lock()
 				} else {
@@ -147,7 +163,7 @@ func (g GearmanWorker) handlePause() {
 	}
 }
 
-func (g GearmanWorker) handelJob(job worker.Job) ([]byte, error) {
+func (g *GearmanWorker) handelJob(job libworker.Job) ([]byte, error) {
 	secret := job.Data()
 	if g.aesECBDecrypter != nil {
 		var err error
