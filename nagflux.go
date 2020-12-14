@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"runtime"
 	"syscall"
 	"time"
 
@@ -172,15 +173,28 @@ For further informations / bugs reportes: https://github.com/ConSol/nagflux
 	nagfluxCollector := nagflux.NewNagfluxFileCollector(resultQueues, cfg.Main.NagfluxSpoolfileFolder, fieldSeparator)
 
 	// Listen for Interrupts
-	interruptChannel := make(chan os.Signal, 1)
-	signal.Notify(interruptChannel, syscall.SIGINT)
-	signal.Notify(interruptChannel, syscall.SIGTERM)
+	signalChannel := make(chan os.Signal, 1)
+	signal.Notify(signalChannel, syscall.SIGINT)
+	signal.Notify(signalChannel, syscall.SIGTERM)
+	signal.Notify(signalChannel, syscall.SIGUSR1)
 	go func() {
-		<-interruptChannel
-		log.Warn("Got Interrupted")
-		stoppables = append(stoppables, []Stoppable{livestatusCollector, livestatusCache, nagiosCollector, nagfluxCollector}...)
-		cleanUp(stoppables, resultQueues)
-		quit <- true
+		for {
+			switch <-signalChannel {
+			case syscall.SIGINT, syscall.SIGTERM:
+				log.Warn("Got Interrupted")
+				stoppables = append(stoppables, []Stoppable{livestatusCollector, livestatusCache, nagiosCollector, nagfluxCollector}...)
+				cleanUp(stoppables, resultQueues)
+				quit <- true
+				return
+			case syscall.SIGUSR1:
+				buf := make([]byte, 1<<16)
+				n := runtime.Stack(buf, true)
+				if n < len(buf) {
+					buf = buf[:n]
+				}
+				log.Warnf("Got USR1 signal, logging thread dump:\n%s", buf)
+			}
+		}
 	}()
 
 	// wait for quit
