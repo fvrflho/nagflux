@@ -30,7 +30,7 @@ type Stoppable interface {
 }
 
 //nagfluxVersion contains the current Github-Release
-const nagfluxVersion string = "v0.4.2"
+const nagfluxVersion string = "v0.5.0"
 
 var log *factorlog.FactorLog
 var quit = make(chan bool)

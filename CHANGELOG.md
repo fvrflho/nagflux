@@ -1,12 +1,15 @@
-## v0.4.2 - 31.7.2020
+## v0.5.0 - 14.12.2020
 ### Feature
 - added support for non InfluxDB targets implementing the HTTP Line Protocol: 
   e.g. Victoriametrics and Telegraf, which have no db concept and other ping/health urls.
 - InfluxDB: optional Database check depending on "db" label in Arguments, to enable multiple targets with database check for InfluxDB
   (for backwards compatibility of config files, would fit better in InfluxDB sections)
+- add usr1 signal handler to write thread dump to logfile
+- improve shutdown performance
 
 ### Fix
 - InfluxDB: fixed failing stop, when StopPullingDataIfDown
+- Gearman: fix deadlock when gearmand restarts
 
 
 ## v0.4.1 - 07.06.2017
