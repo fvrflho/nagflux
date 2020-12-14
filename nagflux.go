@@ -40,14 +40,14 @@ func Nagflux(Build string) {
 	var configPath string
 	var printver bool
 	flag.Usage = func() {
-		fmt.Printf(`Nagflux version %s-%s
+		fmt.Printf(`Nagflux version %s (Build: %s, %s)
 Commandline Parameter:
 -configPath Path to the config file. If no file path is given the default is ./config.gcfg.
 -V Print version and exit
 
 Original author: Philip Griesbacher
 For further informations / bugs reportes: https://github.com/ConSol/nagflux
-`, nagfluxVersion, Build)
+`, nagfluxVersion, Build, runtime.Version())
 	}
 	flag.StringVar(&configPath, "configPath", "config.gcfg", "path to the config file")
 	flag.BoolVar(&printver, "V", false, "print version and exit")
@@ -55,7 +55,7 @@ For further informations / bugs reportes: https://github.com/ConSol/nagflux
 
 	//Print version and exit
 	if printver {
-		fmt.Printf("%s-%s\n", nagfluxVersion, Build)
+		fmt.Printf("%s (Build: %s, %s)\n", nagfluxVersion, Build, runtime.Version())
 		os.Exit(0)
 	}
 
