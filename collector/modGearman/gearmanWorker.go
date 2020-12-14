@@ -76,8 +76,10 @@ func (g *GearmanWorker) startGearmanWorker() error {
 	}
 	g.worker.AddFunc(g.jobQueue, g.handelJob, libworker.Unlimited)
 	if err := g.worker.Ready(); err != nil {
+		g.worker = nil
 		return err
 	}
+	g.log.Info("Gearman worker ready")
 	go g.worker.Work()
 	return nil
 }
