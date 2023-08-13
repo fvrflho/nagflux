@@ -1,6 +1,5 @@
 [![GoDoc](https://godoc.org/github.com/ConSol-Monitoring/nagflux?status.svg)](https://godoc.org/github.com/ConSol-Monitoring/nagflux)
-[![Go Report Card](http://goreportcard.com/badge/ConSol-Monitoring/nagflux)](http:/goreportcard.com/report/ConSol-Monitoring/nagflux)
-[![Coverage Status](https://coveralls.io/repos/ConSol-Monitoring/nagflux/badge.svg?branch=master&service=github)](https://coveralls.io/github/ConSol-Monitoring/nagflux?branch=master)
+
 # Nagflux
 
  (forked from github.com/griesbacher/nagflux)
