@@ -39,7 +39,7 @@ const (
 var (
 	checkMulitRegex       = regexp.MustCompile(`^(.*::)(.*)`)
 	rangeRegex            = regexp.MustCompile(`[\d\.\-]+`)
-	regexPerformancelable = regexp.MustCompile(`([^=]+)=(U|[\d\.,\-]+)([\pL\/%]*);?([\d\.,\-:~@]+)?;?([\d\.,\-:~@]+)?;?([\d\.,\-]+)?;?([\d\.,\-]+)?;?\s*`)
+	regexPerformancelable = regexp.MustCompile(`([^=]+)=(U|[\d\.,\-]+)([\pL\/%]*);?([\d\.,\-:~@]*)?;?([\d\.,\-:~@]*)?;?([\d\.,\-]*)?;?([\d\.,\-]*)?;?\s*`)
 	regexAltCommand       = regexp.MustCompile(`.*\[(.*)\]\s?$`)
 )
 
@@ -56,7 +56,8 @@ type NagiosSpoolfileWorker struct {
 
 // NewNagiosSpoolfileWorker returns a new NagiosSpoolfileWorker.
 func NewNagiosSpoolfileWorker(workerID int, jobs chan string, results collector.ResultQueues,
-	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable) *NagiosSpoolfileWorker {
+	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable,
+) *NagiosSpoolfileWorker {
 	return &NagiosSpoolfileWorker{
 		workerID:               workerID,
 		quit:                   make(chan bool),
@@ -70,7 +71,8 @@ func NewNagiosSpoolfileWorker(workerID int, jobs chan string, results collector.
 
 // NagiosSpoolfileWorkerGenerator generates a worker and starts it.
 func NagiosSpoolfileWorkerGenerator(jobs chan string, results collector.ResultQueues,
-	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable) func() *NagiosSpoolfileWorker {
+	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable,
+) func() *NagiosSpoolfileWorker {
 	workerID := 0
 	return func() *NagiosSpoolfileWorker {
 		s := NewNagiosSpoolfileWorker(workerID, jobs, results, livestatusCacheBuilder, fileBufferSize, defaultTarget)
@@ -139,7 +141,6 @@ func (w *NagiosSpoolfileWorker) run() {
 			timeDiff := float64(time.Since(startTime).Nanoseconds() / 1000000)
 			if timeDiff >= 0 {
 				promServer.SpoolFilesParsedDuration.Add(timeDiff)
-
 			}
 			if queries >= 0 {
 				promServer.SpoolFilesLines.Add(float64(queries))
@@ -172,7 +173,7 @@ func (w *NagiosSpoolfileWorker) PerformanceDataIterator(input map[string]string)
 	go func() {
 		perfSlice := regexPerformancelable.FindAllStringSubmatch(input[typ+"PERFDATA"], -1)
 		currentCheckMultiLabel := ""
-		//try to find a check_multi prefix
+		// try to find a check_multi prefix
 		if len(perfSlice) > 0 && len(perfSlice[0]) > 1 {
 			currentCheckMultiLabel = getCheckMultiRegexMatch(perfSlice[0][1])
 		}
@@ -208,8 +209,8 @@ func (w *NagiosSpoolfileWorker) PerformanceDataIterator(input map[string]string)
 			}
 
 			if currentCheckMultiLabel != "" {
-				//if an check_multi prefix was found last time
-				//test if the current one has also one
+				// if an check_multi prefix was found last time
+				// test if the current one has also one
 				if potentialNextOne := getCheckMultiRegexMatch(perf.PerformanceLabel); potentialNextOne == "" {
 					// if not put the last one in front the current
 					perf.PerformanceLabel = currentCheckMultiLabel + perf.PerformanceLabel
@@ -228,13 +229,13 @@ func (w *NagiosSpoolfileWorker) PerformanceDataIterator(input map[string]string)
 						continue
 					}
 
-					//Add downtime tag if needed
+					// Add downtime tag if needed
 					if performanceType == "value" && w.livestatusCacheBuilder != nil && w.livestatusCacheBuilder.IsServiceInDowntime(perf.Hostname, perf.Service, input[timet]) {
 						perf.Tags["downtime"] = "true"
 					}
 
 					if performanceType == "warn" || performanceType == "crit" {
-						//Range handling
+						// Range handling
 						fillLabel := performanceType + "-fill"
 						rangeHits := rangeRegex.FindAllStringSubmatch(data, -1)
 						if len(rangeHits) == 1 {
@@ -242,7 +243,7 @@ func (w *NagiosSpoolfileWorker) PerformanceDataIterator(input map[string]string)
 							perf.Fields[performanceType] = helper.StringIntToStringFloat(rangeHits[0][0])
 
 						} else if len(rangeHits) == 2 {
-							//If there is a range with no infinity as border, create two points
+							// If there is a range with no infinity as border, create two points
 							if strings.Contains(data, "@") {
 								perf.Tags[fillLabel] = "inner"
 							} else {

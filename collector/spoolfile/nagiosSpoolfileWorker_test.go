@@ -25,7 +25,8 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.0"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
+	},
+	{
 		`DATATYPE::SERVICEPERFDATA	TIMET::1441791000	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::a used=4 'C:\ used %'=44%;89;94;0;100	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1`,
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -148,7 +149,7 @@ var TestPerformanceData = []struct {
 		}},
 	},
 	{
-		//test dot separated data
+		// test dot separated data
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::a used=4.5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -161,8 +162,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test comma separated data
+	},
+	{
+		// test comma separated data
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::comma=4,5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -175,8 +177,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test comma separated data
+	},
+	{
+		// test comma separated data
 		`DATATYPE::SERVICEPERFDATA	TIMET::1441791000	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::a used=4,6 'C:\ used %'=44,1%;89,2;94,3;0,4;100,5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1`,
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -199,8 +202,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "44.1", "warn": "89.2", "crit": "94.3", "min": "0.4", "max": "100.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test tag
+	},
+	{
+		// test tag
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	NAGFLUX:TAG::foo=bar	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::tag=4.5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -213,8 +217,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test empty tag
+	},
+	{
+		// test empty tag
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	NAGFLUX:TAG::	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::tag=4.5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -227,8 +232,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test malformed tag
+	},
+	{
+		// test malformed tag
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	NAGFLUX:TAG::$_SERVICENAGFLUX_TAG$	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::tag=4.5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -241,8 +247,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.AllFilterable,
 		}},
-	}, {
-		//test filterable
+	},
+	{
+		// test filterable
 		"DATATYPE::SERVICEPERFDATA	TIMET::1441791000	NAGFLUX:TARGET::foo	HOSTNAME::xxx	SERVICEDESC::range	SERVICEPERFDATA::tag=4.5	SERVICECHECKCOMMAND::check_ranges!-w 3: -c 4: -g :46 -l :48 SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "xxx",
@@ -255,8 +262,9 @@ var TestPerformanceData = []struct {
 			Fields:           map[string]string{"value": "4.5"},
 			Filterable:       collector.Filterable{Filter: "foo"},
 		}},
-	}, {
-		//github https://github.com/Griesbacher/nagflux/issues/19#issuecomment-286799167
+	},
+	{
+		// github https://github.com/Griesbacher/nagflux/issues/19#issuecomment-286799167
 		"DATATYPE::SERVICEPERFDATA	TIMET::1489572014	HOSTNAME::HOST_SERVER	SERVICEDESC::web	SERVICEPERFDATA::time=0,004118s;;;0,000000 size=128766B;;;0	SERVICECHECKCOMMAND::check_http!HOST_SERVER!80!/!20	HOSTSTATE::UP	HOSTSTATETYPE::HARD SERVICESTATE::OK	SERVICESTATETYPE::HARD	SERVICEOUTPUT::HTTP OK: HTTP/1.1 200 OK - 128766 bytes in 0,004 second response time",
 		[]PerformanceData{{
 			Hostname:         "HOST_SERVER",
@@ -281,7 +289,7 @@ var TestPerformanceData = []struct {
 		}},
 	},
 	{
-		//github https://github.com/Griesbacher/nagflux/issues/32
+		// github https://github.com/Griesbacher/nagflux/issues/32
 		"DATATYPE::SERVICEPERFDATA	TIMET::1490957788	HOSTNAME::müü	SERVICEDESC::möö	SERVICEPERFDATA::getItinerary_min=34385µs getItinerary_avg=130925µs getItinerary_max=267719µs	SERVICECHECKCOMMAND::check_perfs	SERVICESTATE::0	SERVICESTATETYPE::1",
 		[]PerformanceData{{
 			Hostname:         "müü",
@@ -312,6 +320,20 @@ var TestPerformanceData = []struct {
 			Unit:             "µs",
 			Tags:             map[string]string{},
 			Fields:           map[string]string{"value": "267719.0"},
+			Filterable:       collector.AllFilterable,
+		}},
+	},
+	{
+		"DATATYPE::SERVICEPERFDATA	TIMET::1490957788	HOSTNAME::test	SERVICEDESC::test space	SERVICEPERFDATA::'test rss'=35512320B;;;0;	SERVICECHECKCOMMAND::check_test	SERVICESTATE::0	SERVICESTATETYPE::1",
+		[]PerformanceData{{
+			Hostname:         "test",
+			Service:          "test space",
+			Command:          "check_test",
+			Time:             "1490957788000",
+			PerformanceLabel: "'test rss'",
+			Unit:             "B",
+			Tags:             map[string]string{},
+			Fields:           map[string]string{"value": "35512320.0", "min": "0.0"},
 			Filterable:       collector.AllFilterable,
 		}},
 	},
