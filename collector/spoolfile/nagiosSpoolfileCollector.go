@@ -19,7 +19,7 @@ const (
 	IntervalToCheckDirectory = time.Duration(5) * time.Second
 )
 
-//NagiosSpoolfileCollector scans the nagios spoolfile folder and delegates the files to its workers.
+// NagiosSpoolfileCollector scans the nagios spoolfile folder and delegates the files to its workers.
 type NagiosSpoolfileCollector struct {
 	quit           chan bool
 	jobs           chan string
@@ -27,7 +27,7 @@ type NagiosSpoolfileCollector struct {
 	workers        []*NagiosSpoolfileWorker
 }
 
-//NagiosSpoolfileCollectorFactory creates the give amount of Woker and starts them.
+// NagiosSpoolfileCollectorFactory creates the give amount of Woker and starts them.
 func NagiosSpoolfileCollectorFactory(spoolDirectory string, workerAmount int, results collector.ResultQueues,
 	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable) *NagiosSpoolfileCollector {
 	s := &NagiosSpoolfileCollector{
@@ -47,7 +47,7 @@ func NagiosSpoolfileCollectorFactory(spoolDirectory string, workerAmount int, re
 	return s
 }
 
-//Stop stops his workers and itself.
+// Stop stops his workers and itself.
 func (s *NagiosSpoolfileCollector) Stop() {
 	s.quit <- true
 	<-s.quit
@@ -57,7 +57,7 @@ func (s *NagiosSpoolfileCollector) Stop() {
 	logging.GetLogger().Debug("SpoolfileCollector stopped")
 }
 
-//Delegates the files to its workers.
+// Delegates the files to its workers.
 func (s *NagiosSpoolfileCollector) run() {
 	promServer := statistics.GetPrometheusServer()
 	for {
@@ -89,7 +89,7 @@ func (s *NagiosSpoolfileCollector) run() {
 	}
 }
 
-//FilesInDirectoryOlderThanX returns a list of file, of a folder, names which are older then a certain duration.
+// FilesInDirectoryOlderThanX returns a list of file, of a folder, names which are older then a certain duration.
 func FilesInDirectoryOlderThanX(folder string, age time.Duration) []string {
 	files, _ := ioutil.ReadDir(folder)
 	var oldFiles []string
@@ -101,7 +101,7 @@ func FilesInDirectoryOlderThanX(folder string, age time.Duration) []string {
 	return oldFiles
 }
 
-//IsItTime checks if the timestamp plus duration is in the past.
+// IsItTime checks if the timestamp plus duration is in the past.
 func IsItTime(timeStamp time.Time, duration time.Duration) bool {
 	return time.Now().After(timeStamp.Add(duration))
 }

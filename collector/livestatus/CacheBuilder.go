@@ -11,7 +11,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//CacheBuilder fetches data from livestatus.
+// CacheBuilder fetches data from livestatus.
 type CacheBuilder struct {
 	livestatusConnector *Connector
 	quit                chan bool
@@ -45,21 +45,21 @@ OutputFormat: csv
 `
 )
 
-//NewLivestatusCacheBuilder constructor, which also starts it immediately.
+// NewLivestatusCacheBuilder constructor, which also starts it immediately.
 func NewLivestatusCacheBuilder(livestatusConnector *Connector) *CacheBuilder {
 	cache := &CacheBuilder{livestatusConnector, make(chan bool, 2), logging.GetLogger(), Cache{make(map[string]map[string]string)}, &sync.Mutex{}}
 	go cache.run(intervalToCheckLivestatusCache)
 	return cache
 }
 
-//Stop signals the cache to stop.
+// Stop signals the cache to stop.
 func (builder *CacheBuilder) Stop() {
 	builder.quit <- true
 	<-builder.quit
 	builder.log.Debug("LivestatusCacheBuilder stopped")
 }
 
-//Loop which caches livestatus downtimes and waits to quit.
+// Loop which caches livestatus downtimes and waits to quit.
 func (builder *CacheBuilder) run(checkInterval time.Duration) {
 	newCache := builder.createLivestatusCache()
 	builder.mutex.Lock()
@@ -79,7 +79,7 @@ func (builder *CacheBuilder) run(checkInterval time.Duration) {
 	}
 }
 
-//Builds host/service map which are in downtime
+// Builds host/service map which are in downtime
 func (builder CacheBuilder) createLivestatusCache() Cache {
 	result := Cache{downtime: make(map[string]map[string]string)}
 	downtimeCsv := make(chan []string)
@@ -135,7 +135,7 @@ func (builder CacheBuilder) createLivestatusCache() Cache {
 	return result
 }
 
-//IsServiceInDowntime returns true if the host/service is in downtime
+// IsServiceInDowntime returns true if the host/service is in downtime
 func (builder CacheBuilder) IsServiceInDowntime(host, service, time string) bool {
 	result := false
 	builder.mutex.Lock()

@@ -9,7 +9,7 @@ import (
 	"github.com/ConSol/nagflux/logging"
 )
 
-//NotificationData adds notification types to the livestatus data
+// NotificationData adds notification types to the livestatus data
 type NotificationData struct {
 	collector.Filterable
 	Data
@@ -23,7 +23,7 @@ func (notification *NotificationData) sanitizeValues() {
 	notification.notificationLevel = helper.SanitizeInfluxInput(notification.notificationLevel)
 }
 
-//PrintForInfluxDB prints the data in influxdb lineformat
+// PrintForInfluxDB prints the data in influxdb lineformat
 func (notification NotificationData) PrintForInfluxDB(version string) string {
 	notification.sanitizeValues()
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("0.9") {
@@ -38,7 +38,7 @@ func (notification NotificationData) PrintForInfluxDB(version string) string {
 	panic("")
 }
 
-//PrintForElasticsearch prints in the elasticsearch json format
+// PrintForElasticsearch prints in the elasticsearch json format
 func (notification NotificationData) PrintForElasticsearch(version, index string) string {
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("2.0") {
 		text := notificationToText(notification.notificationType)

@@ -14,7 +14,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Collector fetches data from livestatus.
+// Collector fetches data from livestatus.
 type Collector struct {
 	quit                chan bool
 	jobs                collector.ResultQueues
@@ -70,7 +70,7 @@ OutputFormat: csv
 	Naemon = iota
 )
 
-//NewLivestatusCollector constructor, which also starts it immediately.
+// NewLivestatusCollector constructor, which also starts it immediately.
 func NewLivestatusCollector(jobs collector.ResultQueues, livestatusConnector *Connector, detectVersion string) *Collector {
 	live := &Collector{
 		quit:                make(chan bool, 2),
@@ -106,14 +106,14 @@ func NewLivestatusCollector(jobs collector.ResultQueues, livestatusConnector *Co
 	return live
 }
 
-//Stop signals the collector to stop.
+// Stop signals the collector to stop.
 func (live *Collector) Stop() {
 	live.quit <- true
 	<-live.quit
 	live.log.Debug("LivestatusCollector stoped")
 }
 
-//Loop which checks livestats for data or waits to quit.
+// Loop which checks livestats for data or waits to quit.
 func (live Collector) run() {
 	live.queryData()
 	for {
@@ -127,7 +127,7 @@ func (live Collector) run() {
 	}
 }
 
-//Queries livestatus and returns the data to the gobal queue
+// Queries livestatus and returns the data to the gobal queue
 func (live Collector) queryData() {
 	printables := make(chan collector.Printable)
 	finished := make(chan bool)

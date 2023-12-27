@@ -13,7 +13,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
-//PrometheusServer stores all prometheus metrics
+// PrometheusServer stores all prometheus metrics
 type PrometheusServer struct {
 	bufferLength             *prometheus.GaugeVec
 	SpoolFilesOnDisk         prometheus.Gauge
@@ -101,7 +101,7 @@ func initServerConfig() PrometheusServer {
 		BytesSend: BytesSend, SendDuration: SendDuration}
 }
 
-//NewPrometheusServer creates a new PrometheusServer
+// NewPrometheusServer creates a new PrometheusServer
 func NewPrometheusServer(address string) PrometheusServer {
 	pMutex.Lock()
 	server = initServerConfig()
@@ -118,12 +118,12 @@ func NewPrometheusServer(address string) PrometheusServer {
 	return server
 }
 
-//GetPrometheusServer returns the single Prometheusserver
+// GetPrometheusServer returns the single Prometheusserver
 func GetPrometheusServer() PrometheusServer {
 	return server
 }
 
-//WatchResultQueueLength continually monitors the global queue
+// WatchResultQueueLength continually monitors the global queue
 func (s PrometheusServer) WatchResultQueueLength(channels collector.ResultQueues) {
 	go func() {
 		for {
@@ -135,7 +135,7 @@ func (s PrometheusServer) WatchResultQueueLength(channels collector.ResultQueues
 	}()
 }
 
-//Stop stops the Server
+// Stop stops the Server
 func (s PrometheusServer) Stop() {
 	prometheusListener.Close()
 }

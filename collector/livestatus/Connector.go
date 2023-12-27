@@ -11,14 +11,14 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Connector fetches data from livestatus.
+// Connector fetches data from livestatus.
 type Connector struct {
 	Log               *factorlog.FactorLog
 	LivestatusAddress string
 	ConnectionType    string
 }
 
-//Queries livestatus and returns an list of list outer list are lines inner elements within the line.
+// Queries livestatus and returns an list of list outer list are lines inner elements within the line.
 func (connector Connector) connectToLivestatus(query string, result chan []string, outerFinish chan bool) {
 	var conn net.Conn
 	switch connector.ConnectionType {

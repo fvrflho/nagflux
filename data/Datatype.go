@@ -1,6 +1,6 @@
 package data
 
-//Datatype represents the supported databases
+// Datatype represents the supported databases
 type Datatype string
 
 const (

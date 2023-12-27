@@ -17,7 +17,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Connector makes the basic connection to an Influxdb.
+// Connector makes the basic connection to an Influxdb.
 type Connector struct {
 	connectionHost            string
 	connectionArgs            string
@@ -39,7 +39,7 @@ type Connector struct {
 	healthUrl                 string
 }
 
-//ConnectorFactory Constructor which will create some workers if the connection is established.
+// ConnectorFactory Constructor which will create some workers if the connection is established.
 func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionArgs, dumpFile, version string,
 	workerAmount, maxWorkers int, createDatabaseIfNotExists, stopReadingDataIfDown bool, target data.Target, clientTimeout int, healthUrl string) *Connector {
 	parsedArgs := helper.StringToMap(connectionArgs, "&", "=")
@@ -127,7 +127,7 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, connectionA
 	return s
 }
 
-//AddWorker creates a new worker
+// AddWorker creates a new worker
 func (connector *Connector) AddWorker() {
 	oldLength := connector.AmountWorkers()
 	if oldLength < connector.maxWorkers {
@@ -140,7 +140,7 @@ func (connector *Connector) AddWorker() {
 	}
 }
 
-//RemoveWorker stops a worker
+// RemoveWorker stops a worker
 func (connector *Connector) RemoveWorker() {
 	oldLength := connector.AmountWorkers()
 	if oldLength > 1 {
@@ -151,29 +151,29 @@ func (connector *Connector) RemoveWorker() {
 	}
 }
 
-//AmountWorkers current amount of workers.
+// AmountWorkers current amount of workers.
 func (connector Connector) AmountWorkers() int {
 	return len(connector.workers)
 }
 
-//IsAlive is the database system alive.
+// IsAlive is the database system alive.
 func (connector Connector) IsAlive() bool {
 	return connector.isAlive
 }
 
-//DatabaseExists does the database exist.
+// DatabaseExists does the database exist.
 func (connector Connector) DatabaseExists() bool {
 	return connector.databaseExists
 }
 
-//Stop the connector and its workers.
+// Stop the connector and its workers.
 func (connector *Connector) Stop() {
 	connector.quit <- true
 	<-connector.quit
 	connector.log.Debug("InfluxConnectorFactory stopped")
 }
 
-//Waits just for the end.
+// Waits just for the end.
 func (connector *Connector) run() {
 	for {
 		select {
@@ -197,7 +197,7 @@ func (connector *Connector) run() {
 	}
 }
 
-//TestIfIsAlive test active if the database system is alive.
+// TestIfIsAlive test active if the database system is alive.
 func (connector *Connector) TestIfIsAlive(stopReadingDataIfDown bool) bool {
 	result := helper.RequestedReturnCodeIsOK(connector.httpClient, connector.healthUrl, "GET")
 	connector.isAlive = result
@@ -208,7 +208,7 @@ func (connector *Connector) TestIfIsAlive(stopReadingDataIfDown bool) bool {
 	return result
 }
 
-//TestDatabaseExists test active if the database exists.
+// TestDatabaseExists test active if the database exists.
 func (connector *Connector) TestDatabaseExists() bool {
 
 	if !connector.createDatabaseIfNotExists {
@@ -240,7 +240,7 @@ func (connector *Connector) TestDatabaseExists() bool {
 	return false
 }
 
-//CreateDatabase creates the database.
+// CreateDatabase creates the database.
 func (connector *Connector) CreateDatabase(loginData string) bool {
 	host := connector.connectionHost + "/query"
 	if loginData != "" {

@@ -9,7 +9,7 @@ import (
 	"github.com/ConSol/nagflux/logging"
 )
 
-//DowntimeData adds Comments types to the livestatus data
+// DowntimeData adds Comments types to the livestatus data
 type DowntimeData struct {
 	collector.Filterable
 	Data
@@ -21,7 +21,7 @@ func (downtime *DowntimeData) sanitizeValues() {
 	downtime.endTime = helper.SanitizeInfluxInput(downtime.endTime)
 }
 
-//PrintForInfluxDB prints the data in influxdb lineformat
+// PrintForInfluxDB prints the data in influxdb lineformat
 func (downtime DowntimeData) PrintForInfluxDB(version string) string {
 	downtime.sanitizeValues()
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("0.9") {
@@ -34,7 +34,7 @@ func (downtime DowntimeData) PrintForInfluxDB(version string) string {
 	panic("")
 }
 
-//PrintForElasticsearch prints in the elasticsearch json format
+// PrintForElasticsearch prints in the elasticsearch json format
 func (downtime DowntimeData) PrintForElasticsearch(version, index string) string {
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("2.0") {
 		typ := `downtime`

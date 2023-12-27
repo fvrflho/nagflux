@@ -13,7 +13,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//FileCollector provides a interface to nagflux, in which you could insert influxdb queries.
+// FileCollector provides a interface to nagflux, in which you could insert influxdb queries.
 type FileCollector struct {
 	quit           chan bool
 	results        collector.ResultQueues
@@ -30,7 +30,7 @@ test&all&1489474756000&1.0&"""bar"""
 var requiredFields = []string{"table", "time"}
 var optionalFields = []string{"target"}
 
-//NewNagfluxFileCollector constructor, which also starts the collector.
+// NewNagfluxFileCollector constructor, which also starts the collector.
 func NewNagfluxFileCollector(results collector.ResultQueues, folder string, fieldSeparator rune) *FileCollector {
 	s := &FileCollector{
 		quit:           make(chan bool, 1),
@@ -43,14 +43,14 @@ func NewNagfluxFileCollector(results collector.ResultQueues, folder string, fiel
 	return s
 }
 
-//Stop stops the Collector.
+// Stop stops the Collector.
 func (nfc *FileCollector) Stop() {
 	nfc.quit <- true
 	<-nfc.quit
 	nfc.log.Debug("NagfluxFileCollector stoped")
 }
 
-//Checks if the files are old enough, if so they will be added in the queue
+// Checks if the files are old enough, if so they will be added in the queue
 func (nfc FileCollector) run() {
 	for {
 		select {

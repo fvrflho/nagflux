@@ -13,7 +13,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Connector makes the basic connection to an influxdb.
+// Connector makes the basic connection to an influxdb.
 type Connector struct {
 	connectionHost string
 	index          string
@@ -29,7 +29,7 @@ type Connector struct {
 	httpClient     http.Client
 }
 
-//ConnectorFactory Constructor which will create some workers if the connection is established.
+// ConnectorFactory Constructor which will create some workers if the connection is established.
 func ConnectorFactory(jobs chan collector.Printable, connectionHost, index, dumpFile, version string, workerAmount, maxWorkers int, createDatabaseIfNotExists bool) *Connector {
 	if connectionHost[len(connectionHost)-1] != '/' {
 		connectionHost += "/"
@@ -68,7 +68,7 @@ func ConnectorFactory(jobs chan collector.Printable, connectionHost, index, dump
 	return s
 }
 
-//AddWorker creates a new worker
+// AddWorker creates a new worker
 func (connector *Connector) AddWorker() {
 	oldLength := connector.AmountWorkers()
 	if oldLength < connector.maxWorkers {
@@ -78,7 +78,7 @@ func (connector *Connector) AddWorker() {
 	}
 }
 
-//RemoveWorker stops a worker
+// RemoveWorker stops a worker
 func (connector *Connector) RemoveWorker() {
 	oldLength := connector.AmountWorkers()
 	if oldLength > 1 {
@@ -89,29 +89,29 @@ func (connector *Connector) RemoveWorker() {
 	}
 }
 
-//AmountWorkers current amount of workers.
+// AmountWorkers current amount of workers.
 func (connector Connector) AmountWorkers() int {
 	return len(connector.workers)
 }
 
-//IsAlive is the database system alive.
+// IsAlive is the database system alive.
 func (connector Connector) IsAlive() bool {
 	return connector.isAlive
 }
 
-//DatabaseExists does the database exist.
+// DatabaseExists does the database exist.
 func (connector Connector) DatabaseExists() bool {
 	return connector.templateExists
 }
 
-//Stop the connector and its workers.
+// Stop the connector and its workers.
 func (connector *Connector) Stop() {
 	connector.quit <- true
 	<-connector.quit
 	connector.log.Debug("ElasticsearchConnectorFactory stopped")
 }
 
-//Waits just for the end.
+// Waits just for the end.
 func (connector *Connector) run() {
 	for {
 		select {
@@ -135,14 +135,14 @@ func (connector *Connector) run() {
 	}
 }
 
-//TestIfIsAlive test active if the database system is alive.
+// TestIfIsAlive test active if the database system is alive.
 func (connector *Connector) TestIfIsAlive() bool {
 	result := helper.RequestedReturnCodeIsOK(connector.httpClient, connector.connectionHost, "HEAD")
 	connector.isAlive = result
 	return result
 }
 
-//TestTemplateExists test active if the template exists.
+// TestTemplateExists test active if the template exists.
 func (connector *Connector) TestTemplateExists() bool {
 	result, body := helper.SentReturnCodeIsOK(connector.httpClient, connector.connectionHost+"_template", "GET", "")
 	if result && strings.Contains(body, fmt.Sprintf(`"%s":`, connector.index)) {
@@ -153,7 +153,7 @@ func (connector *Connector) TestTemplateExists() bool {
 	return connector.templateExists
 }
 
-//createTemplate creates the nagflux template.
+// createTemplate creates the nagflux template.
 func (connector *Connector) createTemplate() bool {
 	mapping := fmt.Sprintf(NagfluxTemplate,
 		connector.index,
@@ -167,7 +167,7 @@ func (connector *Connector) createTemplate() bool {
 	return true
 }
 
-//NagfluxTemplate creates a template for settings and mapping for nagflux indices.
+// NagfluxTemplate creates a template for settings and mapping for nagflux indices.
 const NagfluxTemplate = `{
   "template": "%s-*",
   "settings": {

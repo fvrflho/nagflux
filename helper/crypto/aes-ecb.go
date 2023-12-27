@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 )
 
-//https://gist.github.com/DeanThompson/17056cc40b4899e3e7f4
+// https://gist.github.com/DeanThompson/17056cc40b4899e3e7f4
 type ecb struct {
 	b         cipher.Block
 	blockSize int
@@ -19,10 +19,10 @@ func newECB(b cipher.Block) *ecb {
 	}
 }
 
-//AESECBDecrypter can decrypt aes ecb.
+// AESECBDecrypter can decrypt aes ecb.
 type AESECBDecrypter ecb
 
-//NewAESECBDecrypter generates a new AESECBDecrypter
+// NewAESECBDecrypter generates a new AESECBDecrypter
 func NewAESECBDecrypter(key []byte) (*AESECBDecrypter, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -31,7 +31,7 @@ func NewAESECBDecrypter(key []byte) (*AESECBDecrypter, error) {
 	return (*AESECBDecrypter)(newECB(block)), nil
 }
 
-//CryptBlocks encrypts the given array and saves it into dst
+// CryptBlocks encrypts the given array and saves it into dst
 func (d *AESECBDecrypter) CryptBlocks(dst, src []byte) {
 	if len(src)%d.blockSize != 0 {
 		panic("crypto/cipher: input not full blocks")
@@ -43,7 +43,7 @@ func (d *AESECBDecrypter) CryptBlocks(dst, src []byte) {
 	}
 }
 
-//Decypt decrpts the given array by using base64decodeing and aes-ecb.
+// Decypt decrpts the given array by using base64decodeing and aes-ecb.
 func (d *AESECBDecrypter) Decypt(data []byte) ([]byte, error) {
 	raw := make([]byte, len(data))
 	decoded, err := base64.StdEncoding.Decode(raw, data)

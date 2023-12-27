@@ -14,7 +14,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//GearmanWorker queries the gearmanserver and adds the extraced perfdata to the queue.
+// GearmanWorker queries the gearmanserver and adds the extraced perfdata to the queue.
 type GearmanWorker struct {
 	runQuit               chan bool
 	loadQuit              chan bool
@@ -28,8 +28,8 @@ type GearmanWorker struct {
 	address               string
 }
 
-//NewGearmanWorker generates a new GearmanWorker.
-//leave the key empty to disable encryption, otherwise the gearmanpacketes are expected to be encrpyten with AES-ECB 128Bit and a 32 Byte Key.
+// NewGearmanWorker generates a new GearmanWorker.
+// leave the key empty to disable encryption, otherwise the gearmanpacketes are expected to be encrpyten with AES-ECB 128Bit and a 32 Byte Key.
 func NewGearmanWorker(address, queue, key string, results collector.ResultQueues, livestatusCacheBuilder *livestatus.CacheBuilder) *GearmanWorker {
 	var decrypter *crypto.AESECBDecrypter
 	if key != "" {
@@ -96,7 +96,7 @@ func (g *GearmanWorker) shutdownGearmanWorker() {
 	g.worker = nil
 }
 
-//Stop stops the worker
+// Stop stops the worker
 func (g *GearmanWorker) Stop() {
 	g.shutdownGearmanWorker()
 	g.runQuit <- true

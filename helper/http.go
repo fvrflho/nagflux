@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-//RequestedReturnCodeIsOK makes an HEAD or GET request. If the returncode is 2XX it will return true.
+// RequestedReturnCodeIsOK makes an HEAD or GET request. If the returncode is 2XX it will return true.
 func RequestedReturnCodeIsOK(client http.Client, url, function string) bool {
 	var resp *http.Response
 	var err error
@@ -25,7 +25,7 @@ func RequestedReturnCodeIsOK(client http.Client, url, function string) bool {
 	return false
 }
 
-//SentReturnCodeIsOK makes the given request. If the returncode is 2XX it will return true and the body else the error message.
+// SentReturnCodeIsOK makes the given request. If the returncode is 2XX it will return true and the body else the error message.
 func SentReturnCodeIsOK(client http.Client, url, function string, data string) (bool, string) {
 	var req *http.Request
 	var resp *http.Response

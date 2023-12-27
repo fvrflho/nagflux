@@ -4,7 +4,7 @@ import (
 	"strconv"
 )
 
-//Cache contains stored data
+// Cache contains stored data
 type Cache struct {
 	downtime map[string]map[string]string
 }

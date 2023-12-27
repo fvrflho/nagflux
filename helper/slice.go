@@ -1,6 +1,6 @@
 package helper
 
-//SumIntSliceTillPos summarise an int slice till a given position.
+// SumIntSliceTillPos summarise an int slice till a given position.
 func SumIntSliceTillPos(slice []int, pos int) int {
 	sum := 0
 	for index, value := range slice {
@@ -13,7 +13,7 @@ func SumIntSliceTillPos(slice []int, pos int) int {
 	return sum
 }
 
-//Contains checks if all values are within the list
+// Contains checks if all values are within the list
 func Contains(hay []string, needles []string) bool {
 	hit := 0
 	for _, a := range hay {

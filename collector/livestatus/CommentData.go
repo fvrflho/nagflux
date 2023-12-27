@@ -6,7 +6,7 @@ import (
 	"github.com/ConSol/nagflux/logging"
 )
 
-//CommentData adds Comments types to the livestatus data
+// CommentData adds Comments types to the livestatus data
 type CommentData struct {
 	collector.Filterable
 	Data
@@ -18,7 +18,7 @@ func (comment *CommentData) sanitizeValues() {
 	comment.entryType = helper.SanitizeInfluxInput(comment.entryType)
 }
 
-//PrintForInfluxDB prints the data in influxdb lineformat
+// PrintForInfluxDB prints the data in influxdb lineformat
 func (comment CommentData) PrintForInfluxDB(version string) string {
 	comment.sanitizeValues()
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("0.9") {
@@ -32,7 +32,7 @@ func (comment CommentData) PrintForInfluxDB(version string) string {
 	panic("")
 }
 
-//PrintForElasticsearch prints in the elasticsearch json format
+// PrintForElasticsearch prints in the elasticsearch json format
 func (comment CommentData) PrintForElasticsearch(version, index string) string {
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("2.0") {
 		typ := commentIDToText(comment.entryType)

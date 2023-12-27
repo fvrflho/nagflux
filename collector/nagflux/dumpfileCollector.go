@@ -14,7 +14,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//DumpfileCollector collects queries from old runs, which could not been completed.
+// DumpfileCollector collects queries from old runs, which could not been completed.
 type DumpfileCollector struct {
 	quit           chan bool
 	jobs           chan collector.Printable
@@ -25,12 +25,12 @@ type DumpfileCollector struct {
 	fileBufferSize int
 }
 
-//GenDumpfileName returns the name of an dumpfile
+// GenDumpfileName returns the name of an dumpfile
 func GenDumpfileName(filename string, ending data.Target) string {
 	return fmt.Sprintf("%s-%s.%s", filename, ending.Name, ending.Datatype)
 }
 
-//NewDumpfileCollector constructor, which also starts the collector
+// NewDumpfileCollector constructor, which also starts the collector
 func NewDumpfileCollector(jobs chan collector.Printable, dumpFile string, target data.Target, fileBufferSize int) *DumpfileCollector {
 	s := &DumpfileCollector{
 		quit:           make(chan bool, 2),
@@ -45,7 +45,7 @@ func NewDumpfileCollector(jobs chan collector.Printable, dumpFile string, target
 	return s
 }
 
-//Stop stops the Collector.
+// Stop stops the Collector.
 func (dump *DumpfileCollector) Stop() {
 	if dump.IsRunning {
 		dump.quit <- true
@@ -55,7 +55,7 @@ func (dump *DumpfileCollector) Stop() {
 	}
 }
 
-//Searches for old file and parses it.
+// Searches for old file and parses it.
 func (dump *DumpfileCollector) run() {
 	if _, err := os.Stat(dump.dumpFile); os.IsNotExist(err) {
 		dump.log.Debugf("Dumpfile: %s not found, skipping... (Everything is fine)", dump.dumpFile)

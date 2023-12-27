@@ -6,15 +6,15 @@ import (
 	"github.com/ConSol/nagflux/data"
 )
 
-//PauseMap is a map to store if an target requested pause or not
+// PauseMap is a map to store if an target requested pause or not
 type PauseMap map[data.Target]bool
 
-//pauseNagflux is used to sync the state of the influxdb
+// pauseNagflux is used to sync the state of the influxdb
 var pauseNagflux = PauseMap{}
 
 var objMutex = &sync.Mutex{}
 
-//IsAnyTargetOnPause will return true if any target requested pause, false otherwise
+// IsAnyTargetOnPause will return true if any target requested pause, false otherwise
 func IsAnyTargetOnPause() bool {
 	objMutex.Lock()
 	result := false

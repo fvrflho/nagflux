@@ -12,7 +12,7 @@ const logColors = "%{Color \"white\" \"DEBUG\"}%{Color \"magenta\" \"WARN\"}%{Co
 
 var singleLogger *factorlog.FactorLog
 
-//InitLogger Constructor.
+// InitLogger Constructor.
 func InitLogger(logFile, minSeverity string) {
 	var logFormatter factorlog.Formatter
 	var targetWriter io.Writer
@@ -31,7 +31,7 @@ func InitLogger(logFile, minSeverity string) {
 	singleLogger.SetMinMaxSeverity(factorlog.StringToSeverity(minSeverity), factorlog.StringToSeverity("PANIC"))
 }
 
-//GetLogger getsingelton logger
+// GetLogger getsingelton logger
 func GetLogger() *factorlog.FactorLog {
 	if singleLogger == nil {
 		InitLogger("", "WARN")
@@ -39,7 +39,7 @@ func GetLogger() *factorlog.FactorLog {
 	return singleLogger
 }
 
-//InitTestLogger creates logger for testing
+// InitTestLogger creates logger for testing
 func InitTestLogger() {
 	singleLogger = factorlog.New(os.Stderr, factorlog.NewStdFormatter(""))
 }

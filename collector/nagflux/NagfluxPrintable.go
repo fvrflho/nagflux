@@ -7,7 +7,7 @@ import (
 	"github.com/ConSol/nagflux/helper"
 )
 
-//Printable converts from nagfluxfile format to X
+// Printable converts from nagfluxfile format to X
 type Printable struct {
 	collector.Filterable
 	Table     string
@@ -16,7 +16,7 @@ type Printable struct {
 	fields    map[string]string
 }
 
-//PrintForInfluxDB prints the data in influxdb lineformat
+// PrintForInfluxDB prints the data in influxdb lineformat
 func (p Printable) PrintForInfluxDB(version string) string {
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("0.9") {
 		line := p.Table
@@ -32,7 +32,7 @@ func (p Printable) PrintForInfluxDB(version string) string {
 	return ""
 }
 
-//PrintForElasticsearch prints in the elasticsearch json format
+// PrintForElasticsearch prints in the elasticsearch json format
 func (p Printable) PrintForElasticsearch(version, index string) string {
 	if helper.VersionOrdinal(version) >= helper.VersionOrdinal("2.0") {
 		head := fmt.Sprintf(`{"index":{"_index":"%s","_type":"%s"}}`, helper.GenIndex(index, p.Timestamp), p.Table) + "\n"

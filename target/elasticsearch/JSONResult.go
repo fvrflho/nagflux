@@ -1,6 +1,6 @@
 package elasticsearch
 
-//JSONResult is the JSON object returned from an bulk request
+// JSONResult is the JSON object returned from an bulk request
 type JSONResult struct {
 	Errors bool `json:"errors"`
 	Items  []struct {

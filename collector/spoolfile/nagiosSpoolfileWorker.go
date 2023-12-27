@@ -43,7 +43,7 @@ var (
 	regexAltCommand       = regexp.MustCompile(`.*\[(.*)\]\s?$`)
 )
 
-//NagiosSpoolfileWorker parses the given spoolfiles and adds the extraced perfdata to the queue.
+// NagiosSpoolfileWorker parses the given spoolfiles and adds the extraced perfdata to the queue.
 type NagiosSpoolfileWorker struct {
 	workerID               int
 	quit                   chan bool
@@ -54,7 +54,7 @@ type NagiosSpoolfileWorker struct {
 	defaultTarget          collector.Filterable
 }
 
-//NewNagiosSpoolfileWorker returns a new NagiosSpoolfileWorker.
+// NewNagiosSpoolfileWorker returns a new NagiosSpoolfileWorker.
 func NewNagiosSpoolfileWorker(workerID int, jobs chan string, results collector.ResultQueues,
 	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable) *NagiosSpoolfileWorker {
 	return &NagiosSpoolfileWorker{
@@ -68,7 +68,7 @@ func NewNagiosSpoolfileWorker(workerID int, jobs chan string, results collector.
 	}
 }
 
-//NagiosSpoolfileWorkerGenerator generates a worker and starts it.
+// NagiosSpoolfileWorkerGenerator generates a worker and starts it.
 func NagiosSpoolfileWorkerGenerator(jobs chan string, results collector.ResultQueues,
 	livestatusCacheBuilder *livestatus.CacheBuilder, fileBufferSize int, defaultTarget collector.Filterable) func() *NagiosSpoolfileWorker {
 	workerID := 0
@@ -80,14 +80,14 @@ func NagiosSpoolfileWorkerGenerator(jobs chan string, results collector.ResultQu
 	}
 }
 
-//Stop stops the worker
+// Stop stops the worker
 func (w *NagiosSpoolfileWorker) Stop() {
 	w.quit <- true
 	<-w.quit
 	logging.GetLogger().Debug("SpoolfileWorker stopped")
 }
 
-//Waits for files to parse and sends the data to the main queue.
+// Waits for files to parse and sends the data to the main queue.
 func (w *NagiosSpoolfileWorker) run() {
 	promServer := statistics.GetPrometheusServer()
 	var file string
@@ -150,7 +150,7 @@ func (w *NagiosSpoolfileWorker) run() {
 	}
 }
 
-//PerformanceDataIterator returns an iterator to loop over generated perf data.
+// PerformanceDataIterator returns an iterator to loop over generated perf data.
 func (w *NagiosSpoolfileWorker) PerformanceDataIterator(input map[string]string) <-chan PerformanceData {
 	ch := make(chan PerformanceData)
 	typ := findType(input)
@@ -295,7 +295,7 @@ func findType(input map[string]string) string {
 	return typ
 }
 
-//searchAltCommand looks for alternative command name in perfdata
+// searchAltCommand looks for alternative command name in perfdata
 func (w *NagiosSpoolfileWorker) searchAltCommand(perfData, command string) string {
 	result := command
 	search := regexAltCommand.FindAllStringSubmatch(perfData, 1)
@@ -305,22 +305,22 @@ func (w *NagiosSpoolfileWorker) searchAltCommand(perfData, command string) strin
 	return splitCommandInput(result)
 }
 
-//Cuts the command at the first !.
+// Cuts the command at the first !.
 func splitCommandInput(command string) string {
 	return strings.Split(command, "!")[0]
 }
 
-//Tests if perfdata is of type hostperfdata.
+// Tests if perfdata is of type hostperfdata.
 func isHostPerformanceData(input map[string]string) bool {
 	return input["DATATYPE"] == hostPerfdata
 }
 
-//Tests if perfdata is of type serviceperfdata.
+// Tests if perfdata is of type serviceperfdata.
 func isServicePerformanceData(input map[string]string) bool {
 	return input["DATATYPE"] == servicePerfdata
 }
 
-//Converts the index of the perftype to an string.
+// Converts the index of the perftype to an string.
 func indexToperformanceType(index int) (string, error) {
 	switch index {
 	case 2:

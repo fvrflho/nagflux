@@ -24,7 +24,7 @@ type JSONFileWorker struct {
 	quit             chan bool
 }
 
-//NewJSONFileWorker creates a new JSONFileWorker
+// NewJSONFileWorker creates a new JSONFileWorker
 func NewJSONFileWorker(log *factorlog.FactorLog, rotation int, jobs chan collector.Printable, target data.Target, path string) *JSONFileWorker {
 	w := &JSONFileWorker{
 		jobs:      jobs,
@@ -55,7 +55,7 @@ func NewJSONFileWorker(log *factorlog.FactorLog, rotation int, jobs chan collect
 	return w
 }
 
-//Stop stops the Dumper.
+// Stop stops the Dumper.
 func (t *JSONFileWorker) Stop() {
 	if t.IsRunning {
 		t.quit <- true

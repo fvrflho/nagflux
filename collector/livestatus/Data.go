@@ -8,7 +8,7 @@ import (
 	"github.com/ConSol/nagflux/helper"
 )
 
-//Data contains basic data extracted from livestatusqueries.
+// Data contains basic data extracted from livestatusqueries.
 type Data struct {
 	hostName           string
 	serviceDisplayName string
@@ -17,7 +17,7 @@ type Data struct {
 	author             string
 }
 
-//Escape all bad chars.
+// Escape all bad chars.
 func (live *Data) sanitizeValues() {
 	live.hostName = helper.SanitizeInfluxInput(live.hostName)
 	live.serviceDisplayName = helper.SanitizeInfluxInput(live.serviceDisplayName)
@@ -25,7 +25,7 @@ func (live *Data) sanitizeValues() {
 	live.author = helper.SanitizeInfluxInput(live.author)
 }
 
-//Generates the Influxdb tablename.
+// Generates the Influxdb tablename.
 func (live Data) getTablename() string {
 	if live.serviceDisplayName == "" {
 		live.serviceDisplayName = config.GetConfig().InfluxDBGlobal.HostcheckAlias
@@ -33,12 +33,12 @@ func (live Data) getTablename() string {
 	return fmt.Sprintf("messages,host=%s,service=%s", live.hostName, live.serviceDisplayName)
 }
 
-//Generates the linedata which can be parsed from influxdb
+// Generates the linedata which can be parsed from influxdb
 func (live Data) genInfluxLine(tags string) string {
 	return live.genInfluxLineWithValue(tags, live.comment)
 }
 
-//Generates the linedata which can be parsed from influxdb
+// Generates the linedata which can be parsed from influxdb
 func (live Data) genInfluxLineWithValue(tags, text string) string {
 	tags += ",author=" + live.author
 	return fmt.Sprintf("%s%s message=\"%s\" %s", live.getTablename(), tags, text, helper.CastStringTimeFromSToMs(live.entryTime))

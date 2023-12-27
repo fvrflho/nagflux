@@ -24,12 +24,12 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Stoppable represents every daemonlike struct which can be stopped
+// Stoppable represents every daemonlike struct which can be stopped
 type Stoppable interface {
 	Stop()
 }
 
-//nagfluxVersion contains the current Github-Release
+// nagfluxVersion contains the current Github-Release
 const nagfluxVersion string = "v0.5.0"
 
 var log *factorlog.FactorLog

@@ -1,6 +1,6 @@
 package config
 
-//Config Represents the config file.
+// Config Represents the config file.
 type Config struct {
 	Main struct {
 		NagiosSpoolfileFolder  string

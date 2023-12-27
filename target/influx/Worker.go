@@ -20,7 +20,7 @@ import (
 	"github.com/kdar/factorlog"
 )
 
-//Worker reads data from the queue and sends them to the influxdb.
+// Worker reads data from the queue and sends them to the influxdb.
 type Worker struct {
 	workerID              int
 	quit                  chan bool
@@ -48,7 +48,7 @@ var error500 = errors.New("Error 500")
 
 var mutex = &sync.Mutex{}
 
-//WorkerGenerator generates a new Worker and starts it.
+// WorkerGenerator generates a new Worker and starts it.
 func WorkerGenerator(jobs chan collector.Printable, connection, dumpFile, version string,
 	connector *Connector, target data.Target, stopReadingDataIfDown bool) func(workerId int) *Worker {
 	return func(workerId int) *Worker {
@@ -73,7 +73,7 @@ func WorkerGenerator(jobs chan collector.Printable, connection, dumpFile, versio
 	}
 }
 
-//Stop stops the worker
+// Stop stops the worker
 func (worker *Worker) Stop() {
 	worker.quitInternal <- true
 	worker.quit <- true
@@ -82,7 +82,7 @@ func (worker *Worker) Stop() {
 	worker.log.Debug("InfluxWorker(" + worker.target.Name + ") stopped")
 }
 
-//Tries to send data all the time.
+// Tries to send data all the time.
 func (worker Worker) run() {
 	var queries []collector.Printable
 	var query collector.Printable
@@ -137,7 +137,7 @@ func (worker Worker) run() {
 	}
 }
 
-//Sends the given queries to the influxdb.
+// Sends the given queries to the influxdb.
 func (worker Worker) sendBuffer(queries []collector.Printable) {
 	if len(queries) == 0 {
 		return
@@ -202,7 +202,7 @@ func (worker Worker) sendBuffer(queries []collector.Printable) {
 
 }
 
-//Reads the queries from the global queue and returns them as string.
+// Reads the queries from the global queue and returns them as string.
 func (worker Worker) readQueriesFromQueue() []string {
 	var queries []string
 	var query collector.Printable
@@ -223,7 +223,7 @@ func (worker Worker) readQueriesFromQueue() []string {
 	return queries
 }
 
-//sends the raw data to influxdb and returns an err if given.
+// sends the raw data to influxdb and returns an err if given.
 func (worker Worker) sendData(rawData []byte, log bool) error {
 	if log {
 		worker.log.Debug("sendData (" + worker.target.Name + ")\n" + string(rawData))
@@ -263,13 +263,13 @@ func (worker Worker) sendData(rawData []byte, log bool) error {
 	return errorFailedToSend
 }
 
-//Logs a http response to warn.
+// Logs a http response to warn.
 func (worker Worker) logHTTPResponse(resp *http.Response) {
 	body, _ := ioutil.ReadAll(resp.Body)
 	worker.log.Warnf("Influx status: %s - %s", resp.Status, string(body))
 }
 
-//Waits on an internal quit signal.
+// Waits on an internal quit signal.
 func (worker Worker) waitForQuitOrGoOn() error {
 	select {
 	//Got stop signal
@@ -283,7 +283,7 @@ func (worker Worker) waitForQuitOrGoOn() error {
 	}
 }
 
-//Writes the bad queries to a dumpfile.
+// Writes the bad queries to a dumpfile.
 func (worker Worker) dumpErrorQueries(messageForLog string, errorQueries []string) {
 	errorFile := worker.dumpFile + "-errors"
 	worker.log.Warnf("Dumping queries with errors to: %s", errorFile)
@@ -291,7 +291,7 @@ func (worker Worker) dumpErrorQueries(messageForLog string, errorQueries []strin
 	worker.dumpQueries(errorFile, errorQueries)
 }
 
-//Dumps the remaining queries if a quit signal arises.
+// Dumps the remaining queries if a quit signal arises.
 func (worker Worker) dumpRemainingQueries(remainingQueries []string) {
 	worker.log.Debugf("Global queue %d own queue %d", len(worker.jobs), len(remainingQueries))
 	if len(worker.jobs) != 0 || len(remainingQueries) != 0 {
@@ -302,7 +302,7 @@ func (worker Worker) dumpRemainingQueries(remainingQueries []string) {
 	}
 }
 
-//Writes queries to a dumpfile.
+// Writes queries to a dumpfile.
 func (worker Worker) dumpQueries(filename string, queries []string) {
 	mutex.Lock()
 	if _, err := os.Stat(filename); os.IsNotExist(err) {
@@ -323,7 +323,7 @@ func (worker Worker) dumpQueries(filename string, queries []string) {
 	mutex.Unlock()
 }
 
-//Converts an collector.Printable to a string.
+// Converts an collector.Printable to a string.
 func (worker Worker) castJobToString(job collector.Printable) (string, error) {
 	var result string
 	var err error

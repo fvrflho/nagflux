@@ -10,7 +10,7 @@ import (
 	"github.com/ConSol/nagflux/logging"
 )
 
-//IsStringANumber returns true if the given string can be casted to int or float.
+// IsStringANumber returns true if the given string can be casted to int or float.
 func IsStringANumber(input string) bool {
 	_, floatErr := strconv.ParseFloat(input, 32)
 	if floatErr == nil {
@@ -20,7 +20,7 @@ func IsStringANumber(input string) bool {
 	return intErr == nil
 }
 
-//StringToMap splits a string by two splitter an returns a map.
+// StringToMap splits a string by two splitter an returns a map.
 func StringToMap(input, entrySplitter, keyValueSplitter string) map[string]string {
 	result := make(map[string]string)
 	if entrySplitter == "" || keyValueSplitter == "" || input == "" {
@@ -38,7 +38,7 @@ func StringToMap(input, entrySplitter, keyValueSplitter string) map[string]strin
 	return result
 }
 
-//StringIntToStringFloat adds a '.0' to a string if it does not contain a dot.
+// StringIntToStringFloat adds a '.0' to a string if it does not contain a dot.
 func StringIntToStringFloat(inputInt string) string {
 	if inputInt == "" {
 		return inputInt
@@ -50,12 +50,12 @@ func StringIntToStringFloat(inputInt string) string {
 	return inputInt
 }
 
-//CastStringTimeFromSToMs adds three zeros to the timestring to cast from Seconds to Milliseconds.
+// CastStringTimeFromSToMs adds three zeros to the timestring to cast from Seconds to Milliseconds.
 func CastStringTimeFromSToMs(time string) string {
 	return time + "000"
 }
 
-//GetYearMonthFromStringTimeMs returns the year and the month of a string which is in ms.
+// GetYearMonthFromStringTimeMs returns the year and the month of a string which is in ms.
 func GetYearMonthFromStringTimeMs(timeString string) (int, int) {
 	i, err := strconv.ParseInt(timeString[:len(timeString)-3], 10, 64)
 	if err != nil {
@@ -65,7 +65,7 @@ func GetYearMonthFromStringTimeMs(timeString string) (int, int) {
 	return date.Year(), int(date.Month())
 }
 
-//VersionOrdinal from here: https://stackoverflow.com/questions/18409373/how-to-compare-two-version-number-strings-in-golang/18411978#18411978
+// VersionOrdinal from here: https://stackoverflow.com/questions/18409373/how-to-compare-two-version-number-strings-in-golang/18411978#18411978
 func VersionOrdinal(version string) string {
 	// ISO/IEC 14651:2011
 	const maxByte = 1<<8 - 1

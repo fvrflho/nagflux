@@ -6,7 +6,7 @@ import (
 	"github.com/ConSol/nagflux/config"
 )
 
-//SanitizeInfluxInput adds backslashes to special chars.
+// SanitizeInfluxInput adds backslashes to special chars.
 func SanitizeInfluxInput(input string) string {
 	if len(input) == 0 {
 		return input
@@ -29,7 +29,7 @@ func SanitizeInfluxInput(input string) string {
 	return input
 }
 
-//SanitizeMap calls SanitizeInfluxInput in key and value
+// SanitizeMap calls SanitizeInfluxInput in key and value
 func SanitizeMap(input map[string]string) map[string]string {
 	result := map[string]string{}
 	for k, v := range input {

@@ -1,6 +1,6 @@
 package data
 
-//Target connects a datatype to a name
+// Target connects a datatype to a name
 type Target struct {
 	Name     string
 	Datatype Datatype

@@ -7,7 +7,7 @@ import (
 	"github.com/ConSol/nagflux/config"
 )
 
-//CreateJSONFromStringMap creates a part of a JSON object
+// CreateJSONFromStringMap creates a part of a JSON object
 func CreateJSONFromStringMap(input map[string]string) string {
 	result := ""
 	for k, v := range input {
@@ -16,7 +16,7 @@ func CreateJSONFromStringMap(input map[string]string) string {
 	return result
 }
 
-//GenJSONValueString quotes the string if it's not a number.
+// GenJSONValueString quotes the string if it's not a number.
 func GenJSONValueString(input string) string {
 	if IsStringANumber(input) {
 		return input
@@ -24,7 +24,7 @@ func GenJSONValueString(input string) string {
 	return fmt.Sprintf(`"%s"`, input)
 }
 
-//SanitizeElasicInput escapes backslashes and trims single ticks.
+// SanitizeElasicInput escapes backslashes and trims single ticks.
 func SanitizeElasicInput(input string) string {
 	input = strings.Trim(input, `'`)
 	input = strings.Replace(input, `\`, `\\`, -1)
@@ -32,7 +32,7 @@ func SanitizeElasicInput(input string) string {
 	return input
 }
 
-//GenIndex generates an index depending on the config, ending with year and month
+// GenIndex generates an index depending on the config, ending with year and month
 func GenIndex(index, timeString string) string {
 	rotation := config.GetConfig().ElasticsearchGlobal.IndexRotation
 	year, month := GetYearMonthFromStringTimeMs(timeString)
