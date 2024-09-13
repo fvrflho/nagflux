@@ -5,8 +5,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/logging"
 )
 
 func TestNewLivestatusCollector(t *testing.T) {

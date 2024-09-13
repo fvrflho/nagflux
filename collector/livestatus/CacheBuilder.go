@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/logging"
 	"github.com/kdar/factorlog"
 )
 

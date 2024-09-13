@@ -8,8 +8,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/data"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/data"
 	"github.com/kdar/factorlog"
 )
 

@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol-Monitoring/nagflux/helper"
 )
 
 func TestDataSanitizeValues(t *testing.T) {

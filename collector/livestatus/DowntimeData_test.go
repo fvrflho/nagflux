@@ -3,8 +3,8 @@ package livestatus
 import (
 	"testing"
 
-	"github.com/ConSol/nagflux/config"
-	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/config"
+	"github.com/ConSol-Monitoring/nagflux/logging"
 )
 
 func TestSanitizeValuesDowntime(t *testing.T) {

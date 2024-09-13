@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/helper"
-	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/helper"
+	"github.com/ConSol-Monitoring/nagflux/logging"
 )
 
 // DowntimeData adds Comments types to the livestatus data

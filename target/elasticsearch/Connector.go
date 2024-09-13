@@ -6,10 +6,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/config"
-	"github.com/ConSol/nagflux/helper"
-	"github.com/ConSol/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/config"
+	"github.com/ConSol-Monitoring/nagflux/helper"
+	"github.com/ConSol-Monitoring/nagflux/logging"
 	"github.com/kdar/factorlog"
 )
 

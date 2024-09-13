@@ -12,7 +12,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ConSol/nagflux/target/influx"
+	"github.com/ConSol-Monitoring/nagflux/target/influx"
 )
 
 const (
