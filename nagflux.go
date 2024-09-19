@@ -9,18 +9,18 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/collector/livestatus"
-	"github.com/ConSol/nagflux/collector/modGearman"
-	"github.com/ConSol/nagflux/collector/nagflux"
-	"github.com/ConSol/nagflux/collector/spoolfile"
-	"github.com/ConSol/nagflux/config"
-	"github.com/ConSol/nagflux/data"
-	"github.com/ConSol/nagflux/logging"
-	"github.com/ConSol/nagflux/statistics"
-	"github.com/ConSol/nagflux/target/elasticsearch"
-	"github.com/ConSol/nagflux/target/file/json"
-	"github.com/ConSol/nagflux/target/influx"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/collector/livestatus"
+	"github.com/ConSol-Monitoring/nagflux/collector/modGearman"
+	"github.com/ConSol-Monitoring/nagflux/collector/nagflux"
+	"github.com/ConSol-Monitoring/nagflux/collector/spoolfile"
+	"github.com/ConSol-Monitoring/nagflux/config"
+	"github.com/ConSol-Monitoring/nagflux/data"
+	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/ConSol-Monitoring/nagflux/statistics"
+	"github.com/ConSol-Monitoring/nagflux/target/elasticsearch"
+	"github.com/ConSol-Monitoring/nagflux/target/file/json"
+	"github.com/ConSol-Monitoring/nagflux/target/influx"
 	"github.com/kdar/factorlog"
 )
 
@@ -46,7 +46,7 @@ Commandline Parameter:
 -V Print version and exit
 
 Original author: Philip Griesbacher
-For further informations / bugs reportes: https://github.com/ConSol/nagflux
+For further informations / bugs reportes: https://github.com/ConSol-Monitoring/nagflux
 `, nagfluxVersion, Build, runtime.Version())
 	}
 	flag.StringVar(&configPath, "configPath", "config.gcfg", "path to the config file")

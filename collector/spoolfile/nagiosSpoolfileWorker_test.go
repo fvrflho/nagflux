@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ConSol/nagflux/collector"
-	"github.com/ConSol/nagflux/helper"
+	"github.com/ConSol-Monitoring/nagflux/collector"
+	"github.com/ConSol-Monitoring/nagflux/helper"
 )
 
 var TestPerformanceData = []struct {
