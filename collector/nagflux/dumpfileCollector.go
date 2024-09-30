@@ -8,9 +8,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/data"
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/data"
+	"github.com/fvrflho/nagflux/logging"
 	"github.com/kdar/factorlog"
 )
 

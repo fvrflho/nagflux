@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/helper"
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/helper"
+	"github.com/fvrflho/nagflux/logging"
 )
 
 type MockLivestatus struct {

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ConSol-Monitoring/nagflux/config"
-	"github.com/ConSol-Monitoring/nagflux/helper"
+	"github.com/fvrflho/nagflux/config"
+	"github.com/fvrflho/nagflux/helper"
 )
 
 // Data contains basic data extracted from livestatusqueries.

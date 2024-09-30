@@ -3,8 +3,8 @@ package livestatus
 import (
 	"testing"
 
-	"github.com/ConSol-Monitoring/nagflux/config"
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/config"
+	"github.com/fvrflho/nagflux/logging"
 )
 
 func TestSanitizeValuesNotification(t *testing.T) {

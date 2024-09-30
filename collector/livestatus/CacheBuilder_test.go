@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/logging"
 )
 
 func TestNewCacheBuilder(t *testing.T) {

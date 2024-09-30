@@ -5,11 +5,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/collector/spoolfile"
-	"github.com/ConSol-Monitoring/nagflux/config"
-	"github.com/ConSol-Monitoring/nagflux/helper"
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/collector/spoolfile"
+	"github.com/fvrflho/nagflux/config"
+	"github.com/fvrflho/nagflux/helper"
+	"github.com/fvrflho/nagflux/logging"
 	"github.com/kdar/factorlog"
 )
 

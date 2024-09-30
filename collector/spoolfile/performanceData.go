@@ -3,9 +3,9 @@ package spoolfile
 import (
 	"fmt"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/config"
-	"github.com/ConSol-Monitoring/nagflux/helper"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/config"
+	"github.com/fvrflho/nagflux/helper"
 )
 
 // PerformanceData represents the nagios perfdata

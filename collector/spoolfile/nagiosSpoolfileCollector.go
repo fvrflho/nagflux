@@ -5,11 +5,11 @@ import (
 	"path"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/collector/livestatus"
-	"github.com/ConSol-Monitoring/nagflux/config"
-	"github.com/ConSol-Monitoring/nagflux/logging"
-	"github.com/ConSol-Monitoring/nagflux/statistics"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/collector/livestatus"
+	"github.com/fvrflho/nagflux/config"
+	"github.com/fvrflho/nagflux/logging"
+	"github.com/fvrflho/nagflux/statistics"
 )
 
 const (

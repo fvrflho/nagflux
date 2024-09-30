@@ -11,11 +11,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/collector/livestatus"
-	"github.com/ConSol-Monitoring/nagflux/helper"
-	"github.com/ConSol-Monitoring/nagflux/logging"
-	"github.com/ConSol-Monitoring/nagflux/statistics"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/collector/livestatus"
+	"github.com/fvrflho/nagflux/helper"
+	"github.com/fvrflho/nagflux/logging"
+	"github.com/fvrflho/nagflux/statistics"
 )
 
 const (

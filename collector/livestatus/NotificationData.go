@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/helper"
-	"github.com/ConSol-Monitoring/nagflux/logging"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/helper"
+	"github.com/fvrflho/nagflux/logging"
 )
 
 // NotificationData adds notification types to the livestatus data
