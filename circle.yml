@@ -10,10 +10,10 @@ dependencies:
         - go get golang.org/x/tools/cmd/cover
     override:
         - cd ..
-        - rm -rf /home/ubuntu/.go_workspace/src/github.com/ConSol/nagflux
-        - rm -rf /home/ubuntu/.go_project/src/github.com/ConSol/nagflux
-        - go get -u -t github.com/ConSol/nagflux; echo 1
-        - go build -v github.com/ConSol/nagflux
+        - rm -rf /home/ubuntu/.go_workspace/src/github.com/fvrflho/nagflux
+        - rm -rf /home/ubuntu/.go_project/src/github.com/fvrflho/nagflux
+        - go get -u -t github.com/fvrflho/nagflux; echo 1
+        - go build -v github.com/fvrflho/nagflux
         - cp nagflux $CIRCLE_ARTIFACTS
 
 database:
@@ -30,6 +30,6 @@ test:
         - influx -execute 'show databases'
         - bash coverage.sh
         - goveralls -coverprofile=cover.out -service=circle-ci -repotoken=$COVERALLS_TOKEN && rm cover.out
-        - curl --data "repo=ConSol/nagflux" http://goreportcard.com/checks
+        - curl --data "repo=fvrflho/nagflux" http://goreportcard.com/checks
         - influx -database 'NAGFLUX_CI_TEST_1' -execute 'select * from /.*/'
         - influx -database 'NAGFLUX_CI_TEST_2' -execute 'select * from /.*/'

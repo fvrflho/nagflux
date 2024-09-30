@@ -1,4 +1,4 @@
-module github.com/ConSol-Monitoring/nagflux
+module github.com/fvrflho/nagflux
 
 go 1.14
 
