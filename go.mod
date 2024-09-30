@@ -15,3 +15,7 @@ require (
 	gopkg.in/robfig/cron.v2 v2.0.0-20150107220207-be2e0b0deed5 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
+
+replace github.com/ConSol/nagflux => github.com/fvrflho/nagflux v0.0.0-20240930214041-696511798e46
+
+replace github.com/ConSol-Monitoring/nagflux => github.com/fvrflho/nagflux v0.0.0-20240930214041-696511798e46
