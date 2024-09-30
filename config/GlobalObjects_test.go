@@ -3,7 +3,7 @@ package config
 import (
 	"testing"
 
-	"github.com/ConSol-Monitoring/nagflux/data"
+	"github.com/fvrflho/nagflux/data"
 )
 
 func TestStoreValue(t *testing.T) {
