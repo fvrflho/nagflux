@@ -11,12 +11,12 @@ import (
 	"sync"
 	"time"
 
-	"github.com/ConSol-Monitoring/nagflux/collector"
-	"github.com/ConSol-Monitoring/nagflux/collector/nagflux"
-	"github.com/ConSol-Monitoring/nagflux/data"
-	"github.com/ConSol-Monitoring/nagflux/helper"
-	"github.com/ConSol-Monitoring/nagflux/logging"
-	"github.com/ConSol-Monitoring/nagflux/statistics"
+	"github.com/fvrflho/nagflux/collector"
+	"github.com/fvrflho/nagflux/collector/nagflux"
+	"github.com/fvrflho/nagflux/data"
+	"github.com/fvrflho/nagflux/helper"
+	"github.com/fvrflho/nagflux/logging"
+	"github.com/fvrflho/nagflux/statistics"
 	"github.com/kdar/factorlog"
 )
 
