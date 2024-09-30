@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/ConSol-Monitoring/nagflux/config"
+	"github.com/fvrflho/nagflux/config"
 )
 
 var CreateJSONFromStringMapData = []struct {

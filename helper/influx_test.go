@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/ConSol-Monitoring/nagflux/config"
+	"github.com/fvrflho/nagflux/config"
 )
 
 var SanitizeInfluxData = []struct {
